@@ -2,13 +2,12 @@ package main
 
 import (
 	"encoding/xml"
-	"fmt"
 	"log"
 	"os"
 	"regexp"
 )
 
-type kml struct {
+type clubsKML struct {
 	Document struct {
 		Placemarks []placemark `xml:"Placemark"`
 	}
@@ -32,22 +31,11 @@ type point struct {
 	Coord string `xml:"coordinates"`
 }
 
-const (
-	clubsKML = "clubs.kml"
-)
-
-func (k *kml) debugPrint() {
-	for _, p := range k.Document.Placemarks {
-		fmt.Println(p.Name)
-		fmt.Println(p.Point.Coord)
-	}
-}
-
 type Typed struct {
 	Type string `json:"type"`
 }
 
-type Club struct {
+type Place struct {
 	Name  string `json:"name"`
 	Point string `json:"point"`
 	Typed
@@ -55,32 +43,32 @@ type Club struct {
 
 var (
 	ccNameMatch = regexp.MustCompile(`(.* CC)($| CC .*)`)
-	descMatch = regexp.MustCompile(`Description - (.*)`)
+	descMatch   = regexp.MustCompile(`Description - (.*)`)
 )
 
-func NewClubs(k *kml) []Club {
-	var clubs []Club
+func (k *clubsKML) Places() []Place {
+	var places []Place
 	for _, p := range k.Document.Placemarks {
 		n := p.Name
 		if m := ccNameMatch.FindStringSubmatch(n); m != nil {
 			n = m[1]
 		}
-		c := Club{
+		place := Place{
 			Name:  n,
 			Point: p.Point.Coord,
 		}
-		c.Type = "club"
-		clubs = append(clubs, c)
+		place.Type = "club"
+		places = append(places, place)
 	}
-	return clubs
+	return places
 }
 
-func getClubs() []Club {
-	f, err := os.Open(clubsKML)
+func getClubs() []Place {
+	f, err := os.Open("clubs.kml")
 	if err != nil {
 		log.Fatal(err)
 	}
-	k := kml{}
+	k := clubsKML{}
 	xml.NewDecoder(f).Decode(&k)
-	return NewClubs(&k)
+	return k.Places()
 }

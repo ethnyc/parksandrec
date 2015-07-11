@@ -17,9 +17,9 @@ var (
 )
 
 type handler struct {
-	tmpl  *template.Template
-	clubs []Club
-	get   endpoints
+	tmpl   *template.Template
+	places []Place
+	get    endpoints
 }
 
 type endpoints map[string]func(http.ResponseWriter, *http.Request)
@@ -27,12 +27,12 @@ type endpoints map[string]func(http.ResponseWriter, *http.Request)
 func newHttpHandler() *handler {
 	h := &handler{
 		tmpl:  template.Must(template.ParseFiles("index.html")),
-		clubs: getClubs(),
 	}
+	h.places = append(h.places, getClubs()...)
 	h.get = endpoints{
 		"/":              h.index,
-		"/places":        h.places,
-		"/places-pretty": h.placespretty,
+		"/places":        h.getplaces,
+		"/places-pretty": h.getplacespretty,
 	}
 	return h
 }
@@ -53,7 +53,7 @@ func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) index(w http.ResponseWriter, r *http.Request) {
-	if err := h.tmpl.ExecuteTemplate(w, "index.html", struct{
+	if err := h.tmpl.ExecuteTemplate(w, "index.html", struct {
 		Get endpoints
 	}{
 		Get: h.get,
@@ -62,13 +62,13 @@ func (h *handler) index(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *handler) places(w http.ResponseWriter, r *http.Request) {
+func (h *handler) getplaces(w http.ResponseWriter, r *http.Request) {
 	e := json.NewEncoder(w)
-	e.Encode(&h.clubs)
+	e.Encode(&h.places)
 }
 
-func (h *handler) placespretty(w http.ResponseWriter, r *http.Request) {
-	b, err := json.MarshalIndent(&h.clubs, "", "  ")
+func (h *handler) getplacespretty(w http.ResponseWriter, r *http.Request) {
+	b, err := json.MarshalIndent(&h.places, "", "  ")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
