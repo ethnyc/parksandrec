@@ -50,6 +50,7 @@ func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "unknown endpoint", http.StatusBadRequest)
 			return
 		}
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		f(w, r)
 	default:
 		http.Error(w, "unsupported action", http.StatusBadRequest)
