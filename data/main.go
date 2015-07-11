@@ -26,7 +26,7 @@ type endpoints map[string]func(http.ResponseWriter, *http.Request)
 
 func newHttpHandler() *handler {
 	h := &handler{
-		tmpl:  template.Must(template.ParseFiles("index.html")),
+		tmpl: template.Must(template.ParseFiles("index.html")),
 	}
 	h.places = append(h.places, getClubs()...)
 	h.get = endpoints{
