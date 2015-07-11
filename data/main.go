@@ -19,7 +19,7 @@ var (
 type handler struct {
 	tmpl  *template.Template
 	clubs []CommunityClub
-	ends  endpoints
+	get   endpoints
 }
 
 type endpoints map[string]func(http.ResponseWriter, *http.Request)
@@ -29,9 +29,9 @@ func newHttpHandler() *handler {
 		tmpl:  template.Must(template.ParseFiles("index.html")),
 		clubs: getCommunityClubs(),
 	}
-	h.ends = endpoints{
-		"/": h.index,
-		"/places": h.places,
+	h.get = endpoints{
+		"/":              h.index,
+		"/places":        h.places,
 		"/places-pretty": h.placespretty,
 	}
 	return h
@@ -39,13 +39,17 @@ func newHttpHandler() *handler {
 
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	p := strings.ToLower(r.URL.Path)
-	f, e := h.ends[p]
-	if !e {
-		http.Error(w, "unknown endpoint", http.StatusBadRequest)
-		return
+	switch r.Method {
+	case "GET":
+		f, e := h.get[p]
+		if !e {
+			http.Error(w, "unknown endpoint", http.StatusBadRequest)
+			return
+		}
+		f(w, r)
+	default:
+		http.Error(w, "unsupported action", http.StatusBadRequest)
 	}
-	f(w, r)
-	//http.Error(w, "unsupported action", http.StatusBadRequest)
 }
 
 func (h *handler) index(w http.ResponseWriter, r *http.Request) {
