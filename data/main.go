@@ -33,9 +33,19 @@ func (h httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (h *httpHandler) handleGet(w http.ResponseWriter, r *http.Request) {
 	switch strings.ToLower(r.URL.Path) {
-	case "/clubs":
+	case "/":
+		fmt.Fprintf(w, "Endpoints:\n\n")
+		fmt.Fprintf(w, "  GET /places\n")
+		fmt.Fprintf(w, "  GET /places-pretty\n")
+	case "/places":
 		e := json.NewEncoder(w)
 		e.Encode(&h.Clubs)
+	case "/places-pretty":
+		b, err := json.MarshalIndent(&h.Clubs, "", "  ")
+		if err != nil {
+			log.Println(err)
+		}
+		w.Write(b)
 	default:
 		http.Error(w, "unknown endpoint", http.StatusBadRequest)
 	}

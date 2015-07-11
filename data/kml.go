@@ -40,16 +40,17 @@ func (k *kml) debugPrint() {
 	for _, p := range k.Document.Placemarks {
 		fmt.Println(p.Name)
 		fmt.Println(p.Point.Coord)
-		for _, l := range p.Desc.Lines {
-			fmt.Println(l.Colour.Bold)
-		}
 	}
+}
+
+type Typed struct {
+	Type string `json:"type"`
 }
 
 type CommunityClub struct {
 	Name  string `json:"name"`
 	Point string `json:"point"`
-	Desc  string `json:"desc"`
+	Typed
 }
 
 var (
@@ -63,23 +64,10 @@ func NewCommunityClubs(k *kml) []CommunityClub {
 			Name:  p.Name,
 			Point: p.Point.Coord,
 		}
-		for _, l := range p.Desc.Lines {
-			s := l.Colour.Bold
-			if m := descMatch.FindStringSubmatch(s); m != nil {
-				c.Desc = m[1]
-			}
-		}
+		c.Type = "communityclub"
 		clubs = append(clubs, c)
 	}
 	return clubs
-}
-
-func printCommunityClubs(clubs []CommunityClub) {
-	for _, c := range clubs {
-		fmt.Println(c.Name)
-		fmt.Println(c.Desc)
-		fmt.Println(c.Point)
-	}
 }
 
 func getCommunityClubs() []CommunityClub {
