@@ -4,10 +4,12 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 )
 
 var (
@@ -30,7 +32,13 @@ func (h httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *httpHandler) handleGet(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "GET")
+	switch strings.ToLower(r.URL.Path) {
+	case "/clubs":
+		e := json.NewEncoder(w)
+		e.Encode(&h.Clubs)
+	default:
+		http.Error(w, "unknown endpoint", http.StatusBadRequest)
+	}
 }
 
 func (h *httpHandler) handlePost(w http.ResponseWriter, r *http.Request) {
