@@ -53,7 +53,11 @@ func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) index(w http.ResponseWriter, r *http.Request) {
-	if err := h.tmpl.ExecuteTemplate(w, "index.html", nil); err != nil {
+	if err := h.tmpl.ExecuteTemplate(w, "index.html", struct{
+		Get endpoints
+	}{
+		Get: h.get,
+	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
