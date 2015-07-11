@@ -18,7 +18,7 @@ var (
 
 type handler struct {
 	tmpl  *template.Template
-	clubs []CommunityClub
+	clubs []Club
 	get   endpoints
 }
 
@@ -27,7 +27,7 @@ type endpoints map[string]func(http.ResponseWriter, *http.Request)
 func newHttpHandler() *handler {
 	h := &handler{
 		tmpl:  template.Must(template.ParseFiles("index.html")),
-		clubs: getCommunityClubs(),
+		clubs: getClubs(),
 	}
 	h.get = endpoints{
 		"/":              h.index,

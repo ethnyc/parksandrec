@@ -33,7 +33,7 @@ type point struct {
 }
 
 const (
-	communityClubsKML = "communityclubs.kml"
+	clubsKML = "clubs.kml"
 )
 
 func (k *kml) debugPrint() {
@@ -47,7 +47,7 @@ type Typed struct {
 	Type string `json:"type"`
 }
 
-type CommunityClub struct {
+type Club struct {
 	Name  string `json:"name"`
 	Point string `json:"point"`
 	Typed
@@ -57,25 +57,25 @@ var (
 	descMatch = regexp.MustCompile(`Description - (.*)`)
 )
 
-func NewCommunityClubs(k *kml) []CommunityClub {
-	var clubs []CommunityClub
+func NewClubs(k *kml) []Club {
+	var clubs []Club
 	for _, p := range k.Document.Placemarks {
-		c := CommunityClub{
+		c := Club{
 			Name:  p.Name,
 			Point: p.Point.Coord,
 		}
-		c.Type = "communityclub"
+		c.Type = "club"
 		clubs = append(clubs, c)
 	}
 	return clubs
 }
 
-func getCommunityClubs() []CommunityClub {
-	f, err := os.Open(communityClubsKML)
+func getClubs() []Club {
+	f, err := os.Open(clubsKML)
 	if err != nil {
 		log.Fatal(err)
 	}
 	k := kml{}
 	xml.NewDecoder(f).Decode(&k)
-	return NewCommunityClubs(&k)
+	return NewClubs(&k)
 }
