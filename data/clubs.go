@@ -15,8 +15,9 @@ type clubsKML struct {
 
 type placemark struct {
 	Name  string `xml:"name"`
-	Desc  desc   `xml:"description"`
-	Point point  `xml:"Point"`
+	Point struct {
+		Coord string `xml:"coordinates"`
+	} `xml:"Point"`
 }
 
 type desc struct {
@@ -25,14 +26,6 @@ type desc struct {
 			Bold string `xml:"b"`
 		} `xml:"font"`
 	} `xml:"p"`
-}
-
-type point struct {
-	Coord string `xml:"coordinates"`
-}
-
-type Typed struct {
-	Type string `json:"type"`
 }
 
 type Place struct {
