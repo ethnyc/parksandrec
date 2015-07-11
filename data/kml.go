@@ -54,14 +54,19 @@ type Club struct {
 }
 
 var (
+	ccNameMatch = regexp.MustCompile(`(.* CC)($| CC .*)`)
 	descMatch = regexp.MustCompile(`Description - (.*)`)
 )
 
 func NewClubs(k *kml) []Club {
 	var clubs []Club
 	for _, p := range k.Document.Placemarks {
+		n := p.Name
+		if m := ccNameMatch.FindStringSubmatch(n); m != nil {
+			n = m[1]
+		}
 		c := Club{
-			Name:  p.Name,
+			Name:  n,
 			Point: p.Point.Coord,
 		}
 		c.Type = "club"
