@@ -6,7 +6,7 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"strings"
@@ -16,50 +16,60 @@ var (
 	listen = flag.String("l", ":8080", "Host and port to listen to")
 )
 
-type httpHandler struct {
-	Clubs []CommunityClub
+type handler struct {
+	tmpl  *template.Template
+	clubs []CommunityClub
+	ends  endpoints
 }
 
-func (h httpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case "GET":
-		h.handleGet(w, r)
-	case "POST":
-		h.handlePost(w, r)
-	default:
-		http.Error(w, "unsupported action", http.StatusBadRequest)
+type endpoints map[string]func(http.ResponseWriter, *http.Request)
+
+func newHttpHandler() *handler {
+	h := &handler{
+		tmpl:  template.Must(template.ParseFiles("index.html")),
+		clubs: getCommunityClubs(),
 	}
+	h.ends = endpoints{
+		"/": h.index,
+		"/places": h.places,
+		"/places-pretty": h.placespretty,
+	}
+	return h
 }
 
-func (h *httpHandler) handleGet(w http.ResponseWriter, r *http.Request) {
-	switch strings.ToLower(r.URL.Path) {
-	case "/":
-		fmt.Fprintf(w, "Endpoints:\n\n")
-		fmt.Fprintf(w, "  GET /places\n")
-		fmt.Fprintf(w, "  GET /places-pretty\n")
-	case "/places":
-		e := json.NewEncoder(w)
-		e.Encode(&h.Clubs)
-	case "/places-pretty":
-		b, err := json.MarshalIndent(&h.Clubs, "", "  ")
-		if err != nil {
-			log.Println(err)
-		}
-		w.Write(b)
-	default:
+func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	p := strings.ToLower(r.URL.Path)
+	f, e := h.ends[p]
+	if !e {
 		http.Error(w, "unknown endpoint", http.StatusBadRequest)
+		return
+	}
+	f(w, r)
+	//http.Error(w, "unsupported action", http.StatusBadRequest)
+}
+
+func (h *handler) index(w http.ResponseWriter, r *http.Request) {
+	if err := h.tmpl.ExecuteTemplate(w, "index.html", nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-func (h *httpHandler) handlePost(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "POST")
+func (h *handler) places(w http.ResponseWriter, r *http.Request) {
+	e := json.NewEncoder(w)
+	e.Encode(&h.clubs)
+}
+
+func (h *handler) placespretty(w http.ResponseWriter, r *http.Request) {
+	b, err := json.MarshalIndent(&h.clubs, "", "  ")
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	w.Write(b)
 }
 
 func main() {
 	flag.Parse()
-	handler := httpHandler{
-		Clubs: getCommunityClubs(),
-	}
+	handler := newHttpHandler()
 	log.Printf("listen = %s", *listen)
 	http.Handle("/", handler)
 	log.Println("Up and running!")
