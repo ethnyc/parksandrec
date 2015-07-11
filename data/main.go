@@ -73,7 +73,7 @@ func (h *handler) getplaces(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) getplacespretty(w http.ResponseWriter, r *http.Request) {
-	b, err := json.MarshalIndent(&h.places, "", "  ")
+	b, err := json.MarshalIndent(&h.places, "", "\t")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
