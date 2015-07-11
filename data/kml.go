@@ -66,7 +66,6 @@ func NewCommunityClubs(k *kml) []CommunityClub {
 		for _, l := range p.Desc.Lines {
 			s := l.Colour.Bold
 			if m := descMatch.FindStringSubmatch(s); m != nil {
-				fmt.Println(m)
 				c.Desc = m[1]
 			}
 		}
@@ -83,13 +82,12 @@ func printCommunityClubs(clubs []CommunityClub) {
 	}
 }
 
-func main() {
+func getCommunityClubs() []CommunityClub {
 	f, err := os.Open(communityClubsKML)
 	if err != nil {
 		log.Fatal(err)
 	}
 	k := kml{}
 	xml.NewDecoder(f).Decode(&k)
-	clubs := NewCommunityClubs(&k)
-	printCommunityClubs(clubs)
+	return NewCommunityClubs(&k)
 }
