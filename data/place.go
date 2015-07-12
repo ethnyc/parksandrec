@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
 type Unique struct {
 	Id int `json:"id"`
@@ -17,7 +20,22 @@ type Place struct {
 	Point string `json:"point"`
 }
 
+var typeMatch = regexp.MustCompile(`^type:(.*)$`)
+
 func (p Place) Matches(s string) bool {
 	s = strings.ToLower(s)
-	return strings.Contains(strings.ToLower(p.Name), s)
+	n := strings.ToLower(p.Name)
+	t := strings.ToLower(p.Type)
+	for _, sub := range strings.Split(s, " ") {
+		if m := typeMatch.FindStringSubmatch(sub); m != nil {
+			if t != m[1] {
+				return false
+			}
+		} else {
+			if !strings.Contains(n, sub) {
+				return false
+			}
+		}
+	}
+	return true
 }
