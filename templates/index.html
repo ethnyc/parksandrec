@@ -140,6 +140,39 @@
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
+
+//////////////////
+      var interval = setInterval(updateActivityTicker, 5000);    
+      function getActivityList() {
+        $.ajax({
+          url: 'http://10.10.200.66:8080/activities',
+          async: false,
+          dataType: 'json',
+          success: function (json) {
+            activityList = json;
+          }
+        });
+        return activityList;
+      }
+
+      function updateActivityTicker() {
+        var items = [];
+        $("#activity-ticker").empty();
+        activityList = getActivityList();
+        $.each(activityList, function(i,item) {
+          items.push('<li class = "list-group-item">' + 
+                     '<b>Name:</b> ' + item.name + '</br>' + 
+                     '<b>Description</b>: ' + item.desc + '</br>' +
+                     '<b>Category</b>: ' + item.categ + '</br>' +
+                     '<b>Location</b>: ' + item.loc + '</br>' +
+                     '<b>Start time</b>: ' + item.start + '</br>' +
+                     '<b>End time</b>: ' + item.end + '</br>' +
+                     '</li>')
+        });
+
+        $('#activity-ticker').append(items.join(''));
+      }
+
     </script>
 
 </head>
@@ -208,7 +241,7 @@
         </div>
         <div class="col-lg-2">
 
-            <ul>
+            <ul class = "list-group" id = "activity-ticker">
               <li>Coffee</li>
               <li>Tea</li>
               <li>Milk</li>
