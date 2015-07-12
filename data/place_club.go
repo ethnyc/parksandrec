@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/xml"
-	"log"
 	"os"
 	"regexp"
 )
@@ -18,14 +17,6 @@ type placemark struct {
 	Point struct {
 		Coord string `xml:"coordinates"`
 	} `xml:"Point"`
-}
-
-type desc struct {
-	Lines []struct {
-		Colour struct {
-			Bold string `xml:"b"`
-		} `xml:"font"`
-	} `xml:"p"`
 }
 
 var ccNameMatch = regexp.MustCompile(`(.* CC)($| CC .*)`)
@@ -50,10 +41,12 @@ func (k *clubsKML) Places() []Place {
 func getClubs() []Place {
 	f, err := os.Open("const/clubs.kml")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer f.Close()
 	k := clubsKML{}
-	xml.NewDecoder(f).Decode(&k)
+	if err := xml.NewDecoder(f).Decode(&k); err != nil {
+		panic(err)
+	}
 	return k.Places()
 }

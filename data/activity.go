@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 	"strings"
 )
@@ -23,12 +22,12 @@ type Activity struct {
 func getActivities() []Activity {
 	f, err := os.Open("var/activities.json")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer f.Close()
 	var activities []Activity
 	if err := json.NewDecoder(f).Decode(&activities); err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	return activities
 }
@@ -36,11 +35,11 @@ func getActivities() []Activity {
 func putActivities(activities []Activity) {
 	f, err := os.Create("var/activities.json")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer f.Close()
 	if err := json.NewEncoder(f).Encode(&activities); err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 }
 

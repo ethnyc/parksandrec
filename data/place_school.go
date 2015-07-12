@@ -2,18 +2,19 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 )
 
 func getSchools() []Place {
 	f, err := os.Open("const/schools.json")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer f.Close()
 	var places []Place
-	json.NewDecoder(f).Decode(&places)
+	if err := json.NewDecoder(f).Decode(&places); err != nil {
+		panic(err)
+	}
 	for i := range places {
 		places[i].Type = "school"
 	}

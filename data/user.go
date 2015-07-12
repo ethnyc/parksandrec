@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 )
 
@@ -15,10 +14,12 @@ type User struct {
 func getUsers() []User {
 	f, err := os.Open("const/users.json")
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 	defer f.Close()
 	var users []User
-	json.NewDecoder(f).Decode(&users)
+	if err := json.NewDecoder(f).Decode(&users); err != nil {
+		panic(err)
+	}
 	return users
 }
