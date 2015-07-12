@@ -91,7 +91,7 @@
 }
 
 .modal-dialog{
-   
+    z-index:60;
 
 }
 
@@ -105,5 +105,5 @@
 }
 
 #myModal{
-    z-index:5000;
+    z-index:1000;
 }
