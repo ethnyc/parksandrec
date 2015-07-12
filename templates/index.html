@@ -79,19 +79,20 @@
         console.log("initalizing maps")
 
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
-          console.log("hi before 222place")
           var place = autocomplete.getPlace()
           console.log(place)
-          console.log("hi after place")
           if (!place.geometry) {
             return
           }
             var returned_location = []
+            console.log(place.geometry.location)
             for (var key in place.geometry.location)
               if (typeof place.geometry.location[key] == 'number' && returned_location.length < 2)
                 returned_location.push(place.geometry.location[key])
+              console.log("4")
             $('#new_idea_loc_lat').val(returned_location[0])
             $('#new_idea_loc_long').val(returned_location[1])
+            console.log(returned_location)
         })
     
 
@@ -117,7 +118,7 @@
 <body>
      {#  <div class="header1">
       </div> #}
-
+  
   <nav class="navbar navbar-default" >
   <div class="container-fluid" >
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -130,6 +131,7 @@
       </button>
       <a class="navbar-brand" href="#">
         Parks and Rec 
+
         {# <img id = "logo" src="static/bee_wings.png" alt="icon here" style = "margin-left:50px " > #}
       </a>
     </div>
@@ -213,14 +215,13 @@
     </div>
 
   </div>
-</body>
-</html>
 
 
 
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
     <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -249,6 +250,8 @@
               <textarea name="body" class="form-control" id="ideaDesc" rows="10" placeholder = "Briefly describe your activity"></textarea>
             </div>
           </div>
+
+           
 
           <div class="form-group">
             <label for="ideaLocation" class="col-sm-2 control-label">Location</label>
@@ -293,4 +296,6 @@
 
 
 
+</body>
+</html>
 

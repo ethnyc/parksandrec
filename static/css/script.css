@@ -68,3 +68,17 @@
   color: #000000;
   font-size: 20;
 }
+
+.pac_container{
+
+    z-index: 1052 !important;
+}
+
+.modal{
+    z-index: 5;
+}
+
+/*.modal-backdrop{
+    z-index: 10;
+}*/
+
