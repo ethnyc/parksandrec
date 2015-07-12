@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/gorilla/mux"
 )
@@ -20,10 +21,13 @@ var (
 type handler struct {
 	tmpl   *template.Template
 	places []Place
+	users  []User
 }
 
 func newHttpHandler() *handler {
-	h := &handler{}
+	h := &handler{
+		users: getUsers(),
+	}
 	h.addPlaces(getClubs())
 	h.addPlaces(getSchools())
 	return h
@@ -60,6 +64,15 @@ func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
 	marshal(w, &places)
 }
 
+func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
+	marshal(w, &h.users)
+}
+
+func (h *handler) getavatar(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+	http.ServeFile(w, r, filepath.Join("const", "avatars", id+".jpg"))
+}
+
 func marshal(w http.ResponseWriter, v interface{}) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	//json.NewEncoder(w).Encode(v)
@@ -78,6 +91,9 @@ func main() {
 	r.HandleFunc("/places", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/{search}", h.searchplaces).Methods("GET")
+	r.HandleFunc("/users", h.getusers).Methods("GET")
+	r.HandleFunc("/users/", h.getusers).Methods("GET")
+	r.HandleFunc("/avatar/{id}", h.getavatar).Methods("GET")
 	log.Printf("listen = %s", *listen)
 	http.Handle("/", r)
 	log.Println("Up and running!")
