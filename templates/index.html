@@ -88,8 +88,25 @@
           var marker = new google.maps.Marker({
             position: myLatlng,
             title: coords[i].name,
-            id: coords[i].id
+            id: coords[i].id,
+            category: coords[i].categ
           });
+
+          console.log(marker.category);
+          if (marker.category == "volunteering") {
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/ltblue-dot.png');
+          } else if (marker.category == "activities") {
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/yellow-dot.png');
+          } else if (marker.category == "community activity") {
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/pink-dot.png');
+          } else if (marker.category == "feedback") {
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/purple-dot.png');
+          } else if (marker.category == "community sharing") {
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/green-dot.png');
+          } else {
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/red-dot.png');
+          }
+
           marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
