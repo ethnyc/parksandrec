@@ -130,7 +130,7 @@
           // marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b><div>Description: '+this.desc+'</div><div>Where: '+this.loc+'</div><p><p><div id="output">'+this.cap+'</span> going!<p><p><button id="target" onclick="$(\'#output\').html(function(i, val) { return val*1+1 });" type="button">  ➕ Join!</button>');
+            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b><div>Description: '+this.desc+'</div><div>Where: '+this.loc+'</div><p><p><span id="output2">'+this.cap+'</span> going!<p><p><button id="target" onclick="$(\'#output2\').html(function(i, val) { return val*1+1 });" type="button">  ➕ Join!</button>');
             infowindow.open(map, this);
           });
           // infowindow.open(map, this[i]);
