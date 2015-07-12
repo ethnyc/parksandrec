@@ -47,7 +47,7 @@ func (h *handler) addPlaces(places []Place) {
 }
 
 func (h *handler) index(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	http.ServeFile(w, r, "README.md")
 }
 
@@ -66,7 +66,7 @@ func filterPlaces(places []Place, search string) []Place {
 }
 
 func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	search := mux.Vars(r)["search"]
 	places := filterPlaces(h.places, search)
 	doMarshal(w, r, &places)
@@ -87,7 +87,7 @@ func filterActivs(activs []Activity, search string) []Activity {
 }
 
 func (h *handler) searchactivs(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	h.m.RLock()
 	defer h.m.RUnlock()
 	search := mux.Vars(r)["search"]
@@ -107,7 +107,7 @@ func (h *handler) getplacebyid(id string) (*Place, error) {
 }
 
 func (h *handler) getplace(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	id := mux.Vars(r)["id"]
 	p, err := h.getplacebyid(id)
 	if err != nil {
@@ -129,7 +129,7 @@ func (h *handler) getuserbyid(id string) (*User, error) {
 }
 
 func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	id := mux.Vars(r)["id"]
 	u, err := h.getuserbyid(id)
 	if err != nil {
@@ -140,7 +140,7 @@ func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	h.m.Lock()
 	defer h.m.Unlock()
 	decoder := json.NewDecoder(r.Body)
@@ -179,7 +179,7 @@ func (h *handler) getactivitybyid(id string) (*Activity, error) {
 }
 
 func (h *handler) getactivity(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	h.m.RLock()
 	defer h.m.RUnlock()
 	id := mux.Vars(r)["id"]
@@ -192,7 +192,7 @@ func (h *handler) getactivity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) joinactivity(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	h.m.Lock()
 	defer h.m.Unlock()
 	uid := mux.Vars(r)["uid"]
@@ -221,7 +221,7 @@ func (h *handler) joinactivity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) leaveactivity(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	h.m.Lock()
 	defer h.m.Unlock()
 	uid := mux.Vars(r)["uid"]
@@ -257,13 +257,13 @@ func (h *handler) leaveactivity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
-	log.Print(r.Method, r.URL.Path)
+	log.Printf("%s %s", r.Method, r.URL.Path)
 	doMarshal(w, r, &h.users)
 }
 
 func (h *handler) getidimg(kind, name string) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Print(r.Method, r.URL.Path)
+		log.Printf("%s %s", r.Method, r.URL.Path)
 		id := mux.Vars(r)["id"]
 		doFile(w, r, filepath.Join(kind, "img", name, id+".jpg"))
 	}
