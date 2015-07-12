@@ -62,7 +62,7 @@ func filterPlaces(places []Place, search string) []Place {
 func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
 	search := mux.Vars(r)["search"]
 	places := filterPlaces(h.places, search)
-	marshal(w, &places)
+	doMarshal(w, r, &places)
 }
 
 func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
@@ -70,28 +70,40 @@ func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
 	n, err := strconv.Atoi(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
-	if n > len(h.users) {
 		return
 	}
-	marshal(w, &h.users[n-1])
+	if n < 1 || n > len(h.users) {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	doMarshal(w, r, &h.users[n-1])
 }
 
 func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
-	marshal(w, &h.users)
+	doMarshal(w, r, &h.users)
 }
 
 func (h *handler) getavatar(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	http.ServeFile(w, r, filepath.Join("const", "avatars", id+".jpg"))
+	doFile(w, r, filepath.Join("const", "avatars", id+".jpg"))
 }
 
-func marshal(w http.ResponseWriter, v interface{}) {
+func addHeaders(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+func doFile(w http.ResponseWriter, r *http.Request, path string) {
+	addHeaders(w, r)
+	http.ServeFile(w, r, path)
+}
+
+func doMarshal(w http.ResponseWriter, r *http.Request, v interface{}) {
+	addHeaders(w, r)
 	//json.NewEncoder(w).Encode(v)
 	b, err := json.MarshalIndent(v, "", "\t")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	w.Write(b)
 }
