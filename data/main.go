@@ -165,10 +165,10 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 	if a.Owner < 1 {
 		a.Owner = 1
 	}
-	a.Parts = []int{a.Owner}
 	if a.Owner > len(h.users) {
 		a.Owner = 1
 	}
+	a.Parts = []int{a.Owner}
 	h.activs = append(h.activs, a)
 	doOK(w, r)
 }
