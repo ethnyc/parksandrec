@@ -1,4 +1,10 @@
 
+.navbar {
+    background-color: #6FC5FE;
+    font-style: "Lato:100";
+    /*font-size:37px;*/
+    margin-bottom: 0px
+}
 
 .header1 {
     height:37px;
@@ -49,4 +55,13 @@
     height : 40px;
     width : 40px;
     margin-top:-8px;
+}
+
+.navbar-brand{
+    font-color: #000000;
+
+}
+
+.navbar-default .navbar-brand {
+  color: #000000;
 }

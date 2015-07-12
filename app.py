@@ -29,8 +29,8 @@ def classify_url():
 
 @app.route("/")
 def hello():
-    print "hi"
-    return render_template('index.html')
+    print "rendering website"
+    return render_template('index.html', name = "hahahahahahah")
 
 def gen(camera):
     while True:
