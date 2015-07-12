@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -64,6 +65,18 @@ func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
 	marshal(w, &places)
 }
 
+func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+	n, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+	if n > len(h.users) {
+		return
+	}
+	marshal(w, &h.users[n-1])
+}
+
 func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
 	marshal(w, &h.users)
 }
@@ -91,6 +104,7 @@ func main() {
 	r.HandleFunc("/places", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/{search}", h.searchplaces).Methods("GET")
+	r.HandleFunc("/user/{id}", h.getuser).Methods("GET")
 	r.HandleFunc("/users", h.getusers).Methods("GET")
 	r.HandleFunc("/users/", h.getusers).Methods("GET")
 	r.HandleFunc("/avatar/{id}", h.getavatar).Methods("GET")

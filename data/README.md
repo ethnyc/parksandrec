@@ -2,6 +2,9 @@
 
 * GET /places
 * GET /places/{search}
+* GET /users
+* GET /user/{userid}
+* GET /avatar/{userid}
 
 ### Searching
 
