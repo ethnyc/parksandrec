@@ -1,5 +1,7 @@
 package main
 
+import "strings"
+
 type Unique struct {
 	Id int `json:"id"`
 }
@@ -13,4 +15,8 @@ type Place struct {
 	Typed
 	Name  string `json:"name"`
 	Point string `json:"point"`
+}
+
+func (p Place) Matches(s string) bool {
+	return strings.Contains(strings.ToLower(p.Name), strings.ToLower(s))
 }

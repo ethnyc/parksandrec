@@ -3,9 +3,8 @@
 	<body>
 		<b>Endpoints:</b>
 		<ul>
-{{ range $key, $value := .Get }}
-			<li><a href="{{ $key }}">GET {{ $key }}</a></li>
-{{ end }}
+			<li><a href="/places">GET /places</a></li>
+			<li><a href="/places/foo">GET /places/{search}</a></li>
 		</ul>
 	</body>
 </html>
