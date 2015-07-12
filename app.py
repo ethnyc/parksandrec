@@ -46,7 +46,10 @@ def add_activity(req = None):
     print name, "  activity_name"
     description = request.form['description']
     print description , " desc"
-    capacity = request.form['capacity']
+    try:
+        capacity = int(request.form['capacity'])
+    except:
+        capacity = 12
     print capacity, "capacity"
     location = request.form['location']
     print location , "location"
@@ -56,7 +59,7 @@ def add_activity(req = None):
     print y, "locLong"
     point = str(x) + "," + str(y)
     print point, "point"
-    start_time = request.form['end_time']
+    start_time = request.form['start_time']
     end_time = request.form['end_time']
     owner = 555
 

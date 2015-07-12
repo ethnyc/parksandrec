@@ -4,6 +4,7 @@
     font-style: "Lato:100";
     /*font-size:37px;*/
     margin-bottom: 0px;
+
     height : 6%;
     font-size: 12;
 }
@@ -66,7 +67,8 @@
 
 .navbar-default .navbar-brand {
   color: #000000;
-  font-size: 20;
+  font-size: 25;
+  font-family: cursive;
 }
 
 .pac_container{
@@ -75,10 +77,29 @@
 }
 
 .modal{
-    z-index: 5;
+    z-index: 10;
 }
 
 /*.modal-backdrop{
     z-index: 10;
 }*/
 
+
+.dropdown{
+    margin-right: 20%;
+
+}
+
+.modal-dialog{
+   
+
+}
+
+.container-fluid{
+    z-index: 1;
+
+}
+
+.navbar-header{
+    margin-right: 20%;
+}
