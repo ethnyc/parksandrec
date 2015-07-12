@@ -205,13 +205,23 @@
 
       function updateActivityTicker() {
         var items = [];
+        var cat_dict = new Array();
+        cat_dict["volunteering"] = "volunteering_icon.png";
+        cat_dict["activities"] = "activities_icon.png";
+        cat_dict["community activity"] = "comm_acti_icon.png";
+        cat_dict["community sharing"] = "comm_sharing_icon.jpg";
+        cat_dict["feedback"] = "feedback_icon.png";
+        cat_dict[""] = "peeps_2_black.png";
+
         $("#activity-ticker").empty();
         activityList = getActivityList();
+
         $.each(activityList.reverse(), function(i,item) {
+          var icon_url = "static/" + cat_dict[item.categ];
+          var img_str = "<img src=\"" + icon_url + "\" height=\"55\" width=\"55\" style=\"margin-top: 2px; margin-right: 0%\">"
           items.push('<li class = "list-group-item">' + 
-                     '<b>Name:</b> ' + item.name + '</br>' + 
-                     '<b>Description</b>: ' + item.desc + '</br>' +
-                     '<b>Category</b>: ' + item.categ + '</br>' +
+                     img_str + item.name + '</br>' + 
+                     item.desc + '</br>' +
                      '<b>Location</b>: ' + item.loc + '</br>' +
                      '<b>Start time</b>: ' + item.start + '</br>' +
                      '<b>End time</b>: ' + item.end + '</br>' +
