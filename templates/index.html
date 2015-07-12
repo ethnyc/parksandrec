@@ -96,6 +96,7 @@
             infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b>');
             infowindow.open(map, this);
           });
+          updateActivityTicker();
         }
 
 
@@ -208,7 +209,7 @@ function stopBounce(mark) {
         var items = [];
         $("#activity-ticker").empty();
         activityList = getActivityList();
-        $.each(activityList, function(i,item) {
+        $.each(activityList.reverse(), function(i,item) {
           items.push('<li class = "list-group-item">' + 
                      '<b>Name:</b> ' + item.name + '</br>' + 
                      '<b>Description</b>: ' + item.desc + '</br>' +
@@ -291,12 +292,7 @@ function stopBounce(mark) {
         <div class="col-lg-2">
 
             <ul class = "list-group" id = "activity-ticker">
-              <li>Coffee</li>
-              <li>Tea</li>
-              <li>Milk</li>
-
-              {{ name }}
-
+               Populating...
             </ul>
         </div>
       </div>
