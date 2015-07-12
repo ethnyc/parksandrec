@@ -28,12 +28,6 @@ type desc struct {
 	} `xml:"p"`
 }
 
-type Place struct {
-	Name  string `json:"name"`
-	Point string `json:"point"`
-	Typed
-}
-
 var (
 	ccNameMatch = regexp.MustCompile(`(.* CC)($| CC .*)`)
 	descMatch   = regexp.MustCompile(`Description - (.*)`)

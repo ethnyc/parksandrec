@@ -16,10 +16,6 @@ var (
 	listen = flag.String("l", ":8080", "Host and port to listen to")
 )
 
-type Typed struct {
-	Type string `json:"type"`
-}
-
 type handler struct {
 	tmpl   *template.Template
 	places []Place
