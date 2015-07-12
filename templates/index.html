@@ -8,16 +8,34 @@
   <link rel="stylesheet" href="/static/css/bootstrap.css">
   <link rel="stylesheet" href="/static/css/script.css">
   <link href="http://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css"/>
-
+  <script type="text/javascript" src="/static/js/content.js"></script>
   <script src="{{ url_for('static', filename='js/demo.js') }}"></script>
+
+    <!-- JQUERY -->
+  <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+  <script type='text/javascript' src="/static/js/xdomain.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+
+  <!--script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>-->
+  <!-- BOOTSTRAP CODE -->
+  <!-- Latest compiled and minified CSS -->
+  {# <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> #}
+  <!-- Optional theme -->
+  {# <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> #}
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <!-- Google maps API-->
+  <!--script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>-->
+  <!-- Get my IP -->
+  <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
 
 
   <style type="text/css">
       html, body, #map-canvas { height: 1000px; margin: 0; padding: 0;}
-    </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPKCyC2GBCVF2hyj27uFITu2v2fQTSaWE">
-    </script>
+  </style>
+  <!--script type="text/javascript"
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPKCyC2GBCVF2hyj27uFITu2v2fQTSaWE">
+  </script-->
     <script type="text/javascript">
       function initialize() {
         var mapOptions = {
@@ -50,8 +68,35 @@
             infowindow.open(map, this);
           });
         }
-      }
 
+
+/////////////////
+
+        var search_bar = document.getElementById('ideaLocation'),
+          autocomplete = new google.maps.places.Autocomplete(search_bar),
+          init = false
+
+        console.log("initalizing maps")
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+          console.log("hi before 222place")
+          var place = autocomplete.getPlace()
+          console.log(place)
+          console.log("hi after place")
+          if (!place.geometry) {
+            return
+          }
+            var returned_location = []
+            for (var key in place.geometry.location)
+              if (typeof place.geometry.location[key] == 'number' && returned_location.length < 2)
+                returned_location.push(place.geometry.location[key])
+            $('#new_idea_loc_lat').val(returned_location[0])
+            $('#new_idea_loc_long').val(returned_location[1])
+        })
+    
+
+      }
+//////////////////
       function getCoords() {
         var coordsArray = [];
         $.ajax({
@@ -180,7 +225,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Post an Idea!</h4>
+        <h4 class="modal-title">Post an Activity!</h4>
       </div>
       <div class="modal-body">
         <form class="form-horizontal" role="form" id="new-idea">
@@ -201,26 +246,41 @@
           <div class="form-group">
             <label for="ideaDesc" class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10">
-              <textarea name="body" class="form-control" id="ideaDesc" rows="10">Briefly describe your activity</textarea>
+              <textarea name="body" class="form-control" id="ideaDesc" rows="10" placeholder = "Briefly describe your activity"></textarea>
             </div>
           </div>
-          <div class="form-group">
-            <label for="ideaCat" class="col-sm-2 control-label">Category</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="ideaDesc" rows="10" name="category">
 
-                mehhhh
-              </select>
-            </div>
-          </div>
-           <div class="form-group">
+          <div class="form-group">
             <label for="ideaLocation" class="col-sm-2 control-label">Location</label>
             <div class="col-sm-10">
-              <input name="location" type="text" class="form-control" id="ideaLocation" placeholder="Location">
+              <input name="location" type="text" class="form-control" id="ideaLocation" placeholder="Location" autocomplete = "on">
               <input type="hidden" name="loclat" id="new_idea_loc_lat">
               <input type="hidden" name="loclong" id="new_idea_loc_long">
             </div>
           </div>
+      
+          <div class="form-group">
+            <label for="ideaCat" class="col-sm-2 control-label">Start Time</label>
+            <div class="col-sm-10">
+              <input name="title" type="text" class="form-control" id="start-time" placeholder="Start Time">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="ideaCat" class="col-sm-2 control-label">End Time</label>
+            <div class="col-sm-10">
+              <input name="title" type="text" class="form-control" id="end-time" placeholder="End Time">
+            </div>
+          </div>
+    
+          <div class="form-group">
+            <label for="ideaCat" class="col-sm-2 control-label">Category</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="ideaDesc" rows="10" name="category">
+              </select>
+            </div>
+          </div>
+           
         </form>
       </div>
       <div class="modal-footer">
@@ -230,3 +290,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+
+
+
+
