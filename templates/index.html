@@ -32,10 +32,9 @@
  
         coords = getCoords();
         for (i = 0; i < coords.length; i++) { 
-          var lat = parseFloat(coords[i].point.split(",")[0]);
-          var lng = parseFloat(coords[i].point.split(",")[1]);
-          var myLatlng = new google.maps.LatLng(lng, lat);
-
+          var lat = parseFloat(coords[i].point.split(",")[1]);
+          var lng = parseFloat(coords[i].point.split(",")[0]);
+          var myLatlng = new google.maps.LatLng(lat, lng);
           var marker = new google.maps.Marker({
             position: myLatlng,
             title: coords[i].name
