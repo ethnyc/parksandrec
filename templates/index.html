@@ -79,23 +79,24 @@
           content: "COOL COMMUNITY CENTER"
         });
  
-        coords = getCoords();
-        for (i = 0; i < coords.length; i++) { 
-          var lat = parseFloat(coords[i].point.split(",")[0]);
-          var lng = parseFloat(coords[i].point.split(",")[1]);
+        acoords = getCoords("http://10.10.200.66:8080/activities");
+        pcoords = getCoords("http://10.10.200.66:8080/places");
+        for (i = 0; i < acoords.length; i++) {
+          var lat = parseFloat(acoords[i].point.split(",")[0]);
+          var lng = parseFloat(acoords[i].point.split(",")[1]);
           var myLatlng = new google.maps.LatLng(lat, lng);
           
           var marker = new google.maps.Marker({
             position: myLatlng,
-            title: coords[i].name,
-            id: coords[i].id,
-            category: coords[i].categ
+            title: acoords[i].name,
+            id: acoords[i].id,
+            category: acoords[i].categ
           });
 
           if (marker.category == "volunteering") {
             marker.setIcon('http://maps.google.com/mapfiles/ms/micons/ltblue-dot.png');
           } else if (marker.category == "activities") {
-            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/yellow-dot.png');
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/blue-dot.png');
           } else if (marker.category == "community activity") {
             marker.setIcon('http://maps.google.com/mapfiles/ms/micons/pink-dot.png');
           } else if (marker.category == "feedback") {
@@ -103,7 +104,7 @@
           } else if (marker.category == "community sharing") {
             marker.setIcon('http://maps.google.com/mapfiles/ms/micons/green-dot.png');
           } else {
-            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/red-dot.png');
+            marker.setIcon('http://maps.google.com/mapfiles/ms/micons/yellow-dot.png');
           }
           marker.setMap(map);
 
@@ -114,6 +115,26 @@
           updateActivityTicker();
         }
 
+        for (i = 0; i < pcoords.length; i++) {
+          var lat = parseFloat(pcoords[i].point.split(",")[1]);
+          var lng = parseFloat(pcoords[i].point.split(",")[0]);
+          var myLatlng = new google.maps.LatLng(lat, lng);
+          
+          var marker = new google.maps.Marker({
+            position: myLatlng,
+            title: pcoords[i].name,
+            id: pcoords[i].id,
+            category: pcoords[i].categ
+          });
+
+          marker.setIcon('http://labs.google.com/ridefinder/images/mm_20_red.png');
+          marker.setMap(map);
+
+          google.maps.event.addListener(marker, 'click', function () {
+            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b>');
+            infowindow.open(map, this);
+          });
+        }
 
 /////////////////
 
@@ -143,10 +164,10 @@
 
       }
 //////////////////
-      function getCoords() {
+      function getCoords(url) {
         var coordsArray = [];
         $.ajax({
-          url: 'http://10.10.200.66:8080/activities',
+          url: url,
           async: false,
           dataType: 'json',
           success: function (json) {
