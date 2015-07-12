@@ -16,10 +16,6 @@ var (
 	listen = flag.String("l", ":8080", "Host and port to listen to")
 )
 
-type Typed struct {
-	Type string `json:"type"`
-}
-
 type handler struct {
 	tmpl   *template.Template
 	places []Place
@@ -32,7 +28,8 @@ func newHttpHandler() *handler {
 	h := &handler{
 		tmpl: template.Must(template.ParseFiles("index.html")),
 	}
-	h.places = append(h.places, getClubs()...)
+	h.addPlaces(getClubs())
+	h.addPlaces(getSchools())
 	h.get = endpoints{
 		"/":              h.index,
 		"/places":        h.getplaces,
@@ -41,7 +38,14 @@ func newHttpHandler() *handler {
 	return h
 }
 
-func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *handler) addPlaces(places []Place) {
+	for _, p := range places {
+		p.Id = len(h.places) + 1
+		h.places = append(h.places, p)
+	}
+}
+
+func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	p := strings.ToLower(r.URL.Path)
 	switch r.Method {
 	case "GET":
