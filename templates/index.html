@@ -274,11 +274,11 @@
           var icon_url = "static/" + cat_dict[item.categ];
           var img_str = "<img src=\"" + icon_url + "\" height=\"55\" width=\"55\" style=\"margin-top: 2px; margin-right: 0%\">"
           items.push('<li class = "list-group-item">' + 
-                     img_str + item.name + '</br>' + 
+                     img_str + '</br>'+ '<b>' + item.name + '</b>'+ '</br>' + 
                      item.desc + '</br>' +
-                     '<b>Location</b>: ' + item.loc + '</br>' +
-                     '<b>Start time</b>: ' + item.start + '</br>' +
-                     '<b>End time</b>: ' + item.end + '</br>' +
+                     '<b>Where</b>: ' + item.loc + '</br>' +
+                     '<b>When</b>: ' + item.start + '</br>' +
+                     // '<b>End</b>: ' + item.end + '</br>' +
                      '</li>')
         });
 
@@ -303,12 +303,12 @@
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand" href="#" style = "margin-left : 75%">
-        OneCommunity 
+        <b>OneCommunity </b>
         {# <img id = "logo" src="static/bee_wings.png" alt="icon here" style = "margin-left:50px " > #}
       </a>
     </div>
 
-    <img src="/static/peeps_2_black.png" height="40" width="40" style = "margin-left: 10%; margin-top : 5px; margin-right : 55%" >
+    <img src="/static/peeps_2_black.png" height="40" width="40" style = "margin-left: 8%; margin-top : 5px; margin-right : 55%" >
     <!-- Collect the nav links, forms, and other content for toggling -->
     <button type="button" class="glyphicon glyphicon-plus" data-toggle="modal" data-target="#myModal" style = "height: 55 ; width : 55; margin-top: 2px; margin-right: 0%"></button>
     <img src="http://10.10.200.66:8080/img/user/2" height="55" width="55" style = "margin-top: 2px; margin-right: 0%" >
@@ -350,7 +350,7 @@
         </div>
         <div class="col-md-8" >
           <form id="phrase_form">
-            <div class="input-group" id="text_input_container">
+            <div class="input-group" id="text_input_container" style = "font-size:25px; height:40px">
               <input type="text" id="text_input" class="form-control" placeholder="Search for an Activity.." aria-describedby="basic-addon1"> </div>
           </form>
           <body>
