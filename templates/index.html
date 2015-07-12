@@ -59,12 +59,13 @@
           
           var marker = new google.maps.Marker({
             position: myLatlng,
-            title: coords[i].name
+            title: coords[i].name,
+            id: coords[i].id
           });
           marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent(this.title);
+            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b>');
             infowindow.open(map, this);
           });
         }
