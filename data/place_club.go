@@ -28,10 +28,7 @@ type desc struct {
 	} `xml:"p"`
 }
 
-var (
-	ccNameMatch = regexp.MustCompile(`(.* CC)($| CC .*)`)
-	descMatch   = regexp.MustCompile(`Description - (.*)`)
-)
+var ccNameMatch = regexp.MustCompile(`(.* CC)($| CC .*)`)
 
 func (k *clubsKML) Places() []Place {
 	var places []Place
