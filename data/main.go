@@ -98,7 +98,7 @@ func (h *handler) getplacebyid(id string) (*Place, error) {
 		return nil, err
 	}
 	if n < 1 || n > len(h.places) {
-		return nil, errors.New("not found")
+		return nil, errors.New("place not found")
 	}
 	return &h.places[n-1], nil
 }
@@ -119,7 +119,7 @@ func (h *handler) getuserbyid(id string) (*User, error) {
 		return nil, err
 	}
 	if n < 1 || n > len(h.users) {
-		return nil, errors.New("not found")
+		return nil, errors.New("user not found")
 	}
 	return &h.users[n-1], nil
 }
@@ -166,7 +166,7 @@ func (h *handler) getactivitybyid(id string) (*Activity, error) {
 		return nil, err
 	}
 	if n < 1 || n > len(h.activs) {
-		return nil, errors.New("not found")
+		return nil, errors.New("activity not found")
 	}
 	return &h.activs[n-1], nil
 }
@@ -184,6 +184,27 @@ func (h *handler) getactivity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) joinactivity(w http.ResponseWriter, r *http.Request) {
+	h.m.Lock()
+	defer h.m.Unlock()
+	uid := mux.Vars(r)["uid"]
+	u, err := h.getuserbyid(uid)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	aid := mux.Vars(r)["aid"]
+	a, err := h.getactivitybyid(aid)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	for _, id := range a.Parts {
+		if id == u.Id {
+			http.Error(w, "user already part of activity", http.StatusBadRequest)
+			return
+		}
+	}
+	a.Parts = append(a.Parts, u.Id)
 }
 
 func (h *handler) leaveactivity(w http.ResponseWriter, r *http.Request) {
@@ -230,15 +251,14 @@ func main() {
 	r.HandleFunc("/places/", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/{search}", h.searchplaces).Methods("GET")
 	r.HandleFunc("/user/{id}", h.getuser).Methods("GET")
-	r.HandleFunc("/user/{id}/join/{activityid}", h.joinactivity).Methods("GET")
-	r.HandleFunc("/user/{id}/leave/{activityid}", h.leaveactivity).Methods("GET")
+	r.HandleFunc("/user/{uid}/join/{aid}", h.joinactivity).Methods("GET")
+	r.HandleFunc("/user/{uid}/leave/{aid}", h.leaveactivity).Methods("GET")
 	r.HandleFunc("/users", h.getusers).Methods("GET")
 	r.HandleFunc("/users/", h.getusers).Methods("GET")
 	r.HandleFunc("/activity", h.postactivity).Methods("POST")
 	r.HandleFunc("/activity/{id}", h.getactivity).Methods("GET")
 	r.HandleFunc("/activities", h.searchactivs).Methods("GET")
 	r.HandleFunc("/activities/", h.searchactivs).Methods("GET")
-	r.HandleFunc("/leave-activity", h.joinactivity).Methods("POST")
 	r.HandleFunc("/img/place/{id}", h.getidimg("const", "place")).Methods("GET")
 	r.HandleFunc("/img/user/{id}", h.getidimg("const", "user")).Methods("GET")
 	r.HandleFunc("/img/activity/{id}", h.getidimg("var", "activity")).Methods("GET")
