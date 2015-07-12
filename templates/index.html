@@ -81,8 +81,8 @@
  
         coords = getCoords();
         for (i = 0; i < coords.length; i++) { 
-          var lat = parseFloat(coords[i].point.split(",")[1]);
-          var lng = parseFloat(coords[i].point.split(",")[0]);
+          var lat = parseFloat(coords[i].point.split(",")[0]);
+          var lng = parseFloat(coords[i].point.split(",")[1]);
           var myLatlng = new google.maps.LatLng(lat, lng);
           
           var marker = new google.maps.Marker({
@@ -130,7 +130,7 @@
       function getCoords() {
         var coordsArray = [];
         $.ajax({
-          url: 'http://10.10.200.66:8080/places',
+          url: 'http://10.10.200.66:8080/activities',
           async: false,
           dataType: 'json',
           success: function (json) {
