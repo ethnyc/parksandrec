@@ -118,7 +118,7 @@
               if (typeof place.geometry.location[key] == 'number' && returned_location.length < 2)
                 returned_location.push(place.geometry.location[key])
               console.log("4")
-            $('#new_idea_loc_lat').val(returned_location[0])
+            $('#new_idea_loc_lat').val(returned_location[0])  
             $('#new_idea_loc_long').val(returned_location[1])
             console.log(returned_location)
         })
@@ -262,20 +262,20 @@
           <div class="form-group">
             <label for="ideaTitle" class="col-sm-2 control-label">Activity Name</label>
             <div class="col-sm-10">
-              <input name="title" type="text" class="form-control" id="activity_name" placeholder="Title">
+              <input name="activity_name" type="text" class="form-control" id="activity_name" placeholder="Title">
             </div>
           </div>
 
           <div class="form-group">
             <label for="ideaTitle" class="col-sm-2 control-label">Capacity</label>
             <div class="col-sm-10">
-              <input name="title" type="text" class="form-control" id="capacity" placeholder="Number of People">
+              <input name="capacity" type="text" class="form-control" id="capacity" placeholder="Number of People">
             </div>
           </div>
           <div class="form-group">
             <label for="ideaDesc" class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10">
-              <textarea name="body" class="form-control" id="ideaDesc" rows="10" placeholder = "Briefly describe your activity"></textarea>
+              <textarea name="description" class="form-control" id="description" rows="10" placeholder = "Briefly describe your activity"></textarea>
             </div>
           </div>
 
@@ -293,21 +293,21 @@
           <div class="form-group">
             <label for="ideaCat" class="col-sm-2 control-label">Start Time</label>
             <div class="col-sm-10">
-              <input name="title" type="text" class="form-control" id="start-time" placeholder="Start Time">
+              <input name="start_time" type="text" class="form-control" id="start_time" placeholder="Start Time">
             </div>
           </div>
 
           <div class="form-group">
             <label for="ideaCat" class="col-sm-2 control-label">End Time</label>
             <div class="col-sm-10">
-              <input name="title" type="text" class="form-control" id="end-time" placeholder="End Time">
+              <input name="end_time" type="text" class="form-control" id="end_time" placeholder="End Time">
             </div>
           </div>
     
           <div class="form-group">
             <label for="ideaCat" class="col-sm-2 control-label">Category</label>
             <div class="col-sm-10">
-              <select class="form-control" id="ideaDesc" rows="10" name="category">
+              <select class="form-control" id="category" rows="10" name="category">
               </select>
             </div>
           </div>
@@ -316,7 +316,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-        <input type="button" value = "hatch it!" id="add_idea" method="POST" form="new-idea" class="btn btn-primary" data-dismiss="modal">
+        <input type="button" value = "hatch it!" id="add_activity" method="POST" form="new-idea" class="btn btn-primary" data-dismiss="modal">
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -326,4 +326,16 @@
 
 </body>
 </html>
+
+
+
+{# id int
+owner int
+desc stirng
+loc string
+point string
+start string
+end string
+parts []int
+cap int #}
 

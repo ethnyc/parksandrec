@@ -138,12 +138,20 @@ $(document).ready(function () {
 // }
 
 
-	$('.ideaLocation').keypress(function(e) {
+	// $('.ideaLocation').keypress(function(e) {
  
-    google.maps.event.trigger(autocomplete, 'place_changed');
-    return false;
+ //    google.maps.event.trigger(autocomplete, 'place_changed');
+ //    return false;
 
-	});	
+	// });	
+
+
+	$('#add_activity').on('click', function (e) {
+		$.post("/add_activity", $('#new-idea').serialize(), function (data) {
+			// $('#ideas_1').append(data)
+			console.log("trying to add activity")
+		})
+	})
 
 })
 function initializeMaps() {

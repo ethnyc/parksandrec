@@ -5,6 +5,9 @@ import os
 import uuid
 import urllib2
 import time
+import httplib, urllib
+import requests
+import json
  
 app = Flask(__name__)
 # print "hello"
@@ -28,9 +31,55 @@ def classify_url():
         return 
 
 @app.route("/")
-def hello():
+def index_main():
     print "rendering website"
     return render_template('index.html', name = "hahahahahahah")
+
+@app.route("/add_activity",methods=["POST"])
+def add_activity(req = None):
+    print "rendering post activity"
+    # print req
+    # print request.form["description"]
+    # print request
+
+    name = request.form['activity_name']
+    print name, "  activity_name"
+    description = request.form['description']
+    print description , " desc"
+    capacity = request.form['capacity']
+    print capacity, "capacity"
+    location = request.form['location']
+    print location , "location"
+    x = request.form['loclat']
+    print x, "loclat"
+    y = request.form['loclong']
+    print y, "locLong"
+    point = str(x) + "," + str(y)
+    print point, "point"
+    start_time = request.form['end_time']
+    end_time = request.form['end_time']
+    owner = 555
+
+    
+    data_r = {
+        "name" : name,
+        "desc" : description,
+        "cap" : capacity,
+        "loc" : location,
+        "point" : point,
+        "start" : start_time,
+        "end" : end_time,
+        "owner" : owner
+
+
+    }
+
+    data_r_json = json.dumps(data_r)
+
+    r = requests.post("http://10.10.200.66:8080/activity", data= data_r_json)
+    print(r.status_code, r.reason)
+
+    return render_template('submit_form.html', name = "add_activity_meh")
 
 def gen(camera):
     while True:
