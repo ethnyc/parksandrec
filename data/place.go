@@ -22,9 +22,20 @@ type Place struct {
 
 var typeMatch = regexp.MustCompile(`^type:(.*)$`)
 
+func anyContains(fields []string, str string) bool {
+	for _, f := range fields {
+		if strings.Contains(f, str) {
+			return true
+		}
+	}
+	return false
+}
+
 func (p Place) Matches(s string) bool {
 	s = strings.ToLower(s)
-	n := strings.ToLower(p.Name)
+	fields := []string{
+		strings.ToLower(p.Name),
+	}
 	t := strings.ToLower(p.Type)
 	for _, sub := range strings.Split(s, " ") {
 		if m := typeMatch.FindStringSubmatch(sub); m != nil {
@@ -32,7 +43,7 @@ func (p Place) Matches(s string) bool {
 				return false
 			}
 		} else {
-			if !strings.Contains(n, sub) {
+			if !anyContains(fields, sub) {
 				return false
 			}
 		}

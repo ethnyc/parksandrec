@@ -23,11 +23,13 @@ type handler struct {
 	tmpl   *template.Template
 	places []Place
 	users  []User
+	activs []Activity
 }
 
 func newHttpHandler() *handler {
 	h := &handler{
-		users: getUsers(),
+		users:  getUsers(),
+		activs: getActivities(),
 	}
 	h.addPlaces(getClubs())
 	h.addPlaces(getSchools())
@@ -63,6 +65,26 @@ func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
 	search := mux.Vars(r)["search"]
 	places := filterPlaces(h.places, search)
 	doMarshal(w, r, &places)
+}
+
+func filterActivs(activs []Activity, search string) []Activity {
+	if search == "" {
+		return activs
+	}
+	found := []Activity{}
+	for _, p := range activs {
+		if !p.Matches(search) {
+			continue
+		}
+		found = append(found, p)
+	}
+	return found
+}
+
+func (h *handler) searchactivs(w http.ResponseWriter, r *http.Request) {
+	search := mux.Vars(r)["search"]
+	activs := filterActivs(h.activs, search)
+	doMarshal(w, r, &activs)
 }
 
 func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
@@ -120,6 +142,9 @@ func main() {
 	r.HandleFunc("/users", h.getusers).Methods("GET")
 	r.HandleFunc("/users/", h.getusers).Methods("GET")
 	r.HandleFunc("/avatar/{id}", h.getavatar).Methods("GET")
+	r.HandleFunc("/activities", h.searchactivs).Methods("GET")
+	r.HandleFunc("/activities/", h.searchactivs).Methods("GET")
+	r.HandleFunc("/activities/{search}", h.searchactivs).Methods("GET")
 	log.Printf("listen = %s", *listen)
 	http.Handle("/", r)
 	log.Println("Up and running!")
