@@ -103,3 +103,7 @@
 .navbar-header{
     margin-right: 20%;
 }
+
+#myModal{
+    z-index:5000;
+}
