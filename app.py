@@ -63,6 +63,7 @@ def add_activity(req = None):
     end_time = request.form['end_time']
     owner = 555
 
+    category = request.form['category']
     
     data_r = {
         "name" : name,
@@ -72,7 +73,8 @@ def add_activity(req = None):
         "point" : point,
         "start" : start_time,
         "end" : end_time,
-        "owner" : owner
+        "owner" : owner,
+        "categ" : category
 
 
     }
