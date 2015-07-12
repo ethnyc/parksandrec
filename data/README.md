@@ -10,3 +10,4 @@
 
 * Space-separated search terms
 * `type:foo`
+* Case insensitive
