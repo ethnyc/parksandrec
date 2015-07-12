@@ -18,5 +18,6 @@ type Place struct {
 }
 
 func (p Place) Matches(s string) bool {
-	return strings.Contains(strings.ToLower(p.Name), strings.ToLower(s))
+	s = strings.ToLower(s)
+	return strings.Contains(strings.ToLower(p.Name), s)
 }

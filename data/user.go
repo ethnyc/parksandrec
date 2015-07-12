@@ -2,6 +2,6 @@ package main
 
 type User struct {
 	Unique
-	Name    string
-	Surname string
+	Name    string `json:"name"`
+	Surname string `json:"surname"`
 }

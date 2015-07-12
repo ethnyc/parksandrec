@@ -46,7 +46,7 @@ func (h *handler) index(w http.ResponseWriter, r *http.Request) {
 
 func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
 	search := mux.Vars(r)["search"]
-	var found []Place
+	found := []Place{}
 	if search == "" {
 		found = h.places
 	} else {
@@ -75,6 +75,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", h.index).Methods("GET")
 	r.HandleFunc("/places", h.searchplaces).Methods("GET")
+	r.HandleFunc("/places/", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/{search}", h.searchplaces).Methods("GET")
 	log.Printf("listen = %s", *listen)
 	http.Handle("/", r)
