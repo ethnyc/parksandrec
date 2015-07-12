@@ -5,6 +5,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"flag"
 	"html/template"
 	"log"
@@ -91,32 +92,46 @@ func (h *handler) searchactivs(w http.ResponseWriter, r *http.Request) {
 	doMarshal(w, r, &activs)
 }
 
+func (h *handler) getplacebyid(id string) (*Place, error) {
+	n, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	if n < 1 || n > len(h.places) {
+		return nil, errors.New("not found")
+	}
+	return &h.places[n-1], nil
+}
+
 func (h *handler) getplace(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	n, err := strconv.Atoi(id)
+	p, err := h.getplacebyid(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if n < 1 || n > len(h.places) {
-		http.Error(w, "not found", http.StatusNotFound)
-		return
+	doMarshal(w, r, p)
+}
+
+func (h *handler) getuserbyid(id string) (*User, error) {
+	n, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
 	}
-	doMarshal(w, r, &h.places[n-1])
+	if n < 1 || n > len(h.users) {
+		return nil, errors.New("not found")
+	}
+	return &h.users[n-1], nil
 }
 
 func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
-	n, err := strconv.Atoi(id)
+	u, err := h.getuserbyid(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if n < 1 || n > len(h.users) {
-		http.Error(w, "not found", http.StatusNotFound)
-		return
-	}
-	doMarshal(w, r, &h.users[n-1])
+	doMarshal(w, r, u)
 }
 
 func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
@@ -125,7 +140,8 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var a Activity
 	if err := decoder.Decode(&a); err != nil {
-		log.Print(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	a.Id = len(h.activs) + 1
 	a.Parts = []int{}
@@ -144,20 +160,33 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 	h.activs = append(h.activs, a)
 }
 
+func (h *handler) getactivitybyid(id string) (*Activity, error) {
+	n, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	if n < 1 || n > len(h.activs) {
+		return nil, errors.New("not found")
+	}
+	return &h.activs[n-1], nil
+}
+
 func (h *handler) getactivity(w http.ResponseWriter, r *http.Request) {
 	h.m.RLock()
 	defer h.m.RUnlock()
 	id := mux.Vars(r)["id"]
-	n, err := strconv.Atoi(id)
+	a, err := h.getactivitybyid(id)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if n < 1 || n > len(h.activs) {
-		http.Error(w, "not found", http.StatusNotFound)
-		return
-	}
-	doMarshal(w, r, &h.activs[n-1])
+	doMarshal(w, r, a)
+}
+
+func (h *handler) joinactivity(w http.ResponseWriter, r *http.Request) {
+}
+
+func (h *handler) leaveactivity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
@@ -201,13 +230,15 @@ func main() {
 	r.HandleFunc("/places/", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/{search}", h.searchplaces).Methods("GET")
 	r.HandleFunc("/user/{id}", h.getuser).Methods("GET")
+	r.HandleFunc("/user/{id}/join/{activityid}", h.joinactivity).Methods("GET")
+	r.HandleFunc("/user/{id}/leave/{activityid}", h.leaveactivity).Methods("GET")
 	r.HandleFunc("/users", h.getusers).Methods("GET")
 	r.HandleFunc("/users/", h.getusers).Methods("GET")
 	r.HandleFunc("/activity", h.postactivity).Methods("POST")
 	r.HandleFunc("/activity/{id}", h.getactivity).Methods("GET")
 	r.HandleFunc("/activities", h.searchactivs).Methods("GET")
 	r.HandleFunc("/activities/", h.searchactivs).Methods("GET")
-	r.HandleFunc("/activities/{search}", h.searchactivs).Methods("GET")
+	r.HandleFunc("/leave-activity", h.joinactivity).Methods("POST")
 	r.HandleFunc("/img/place/{id}", h.getidimg("const", "place")).Methods("GET")
 	r.HandleFunc("/img/user/{id}", h.getidimg("const", "user")).Methods("GET")
 	r.HandleFunc("/img/activity/{id}", h.getidimg("var", "activity")).Methods("GET")
