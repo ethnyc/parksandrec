@@ -61,6 +61,7 @@ func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
 
 func marshal(w http.ResponseWriter, v interface{}) {
 	//json.NewEncoder(w).Encode(v)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	b, err := json.MarshalIndent(v, "", "\t")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
