@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="shortcut icon" type="image/png" href="static/bee_icon.png"/>
+  <title> Parks and Rec </title>
+  <script src="/static/js/jquery-1.11.2.min.js"></script>
+  <script src="/static/js/bootstrap.js"></script>
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/script.css">
+  <link href="http://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css"/>
+
+  <script src="{{ url_for('static', filename='js/demo.js') }}"></script>
+
+
+  <style type="text/css">
+      html, body, #map-canvas { height: 1000px; margin: 0; padding: 0;}
+    </style>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPKCyC2GBCVF2hyj27uFITu2v2fQTSaWE">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          // center: { lat: -34.397, lng: 150.644},
+          center: { lat: 1.352083, lng: 103.819836},
+          zoom: 12
+        };
+ 
+        // console.log(httpGet("10.10.200.66:8080/clubs"));
+        var myLatlng = new google.maps.LatLng(1, 102);
+        var map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+     
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Hello World!'
+        });
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+</head>
+<body>
+     {#  <div class="header1">
+      </div> #}
+      <div class="header2" >
+        <p style = "margin-left:10px">Parks and Rec   <img id = "logo" src="static/bee_wings.png" alt="icon here" style = "margin-left:0px " > </p>
+      
+      </div>
+  
+
+      <div > </div>
+      <div class="row">
+
+        <div class="col-lg-2">hello</div>
+        <div class="col-md-8" >
+          <form id="phrase_form">
+            <div class="input-group" id="text_input_container">
+              <input type="text" id="text_input" class="form-control" placeholder="Search for an Activity.." aria-describedby="basic-addon1"> </div>
+          </form>
+          <body>
+            <div id = "map-canvas"> </div>
+          </body>
+        </div>
+        <div class="col-lg-2">
+
+
+            hello
+        </div>
+      </div>
+            
+            
+
+
+      
+      
+<!--
+      <div class="row" id="text_row">
+      <div class="col-md-8" id="text_container">
+        <img id = "logo2" src="static/bee_icon.png" alt="icon here" style = "margin-left:470px ; width : 250px ; height : auto ; margin-bottom: 100px" >
+
+        <form id="phrase_form">
+        <div class="input-group" id="text_input_container">
+          <input type="text" id="text_input" class="form-control" placeholder="Enter phrase here to translate to Bumblebee" aria-describedby="basic-addon1">
+        </form>
+    </div>
+      </div>
+     
+      </div>
+
+
+      <div>
+      <div style="margin-top: 148px">
+      <div class="header1">
+      </div>
+      <div class="header2">
+      </div>
+      <div class="header1" >
+      </div>
+
+-->
+    </div>
+
+  </div>
+</body>
+</html>
