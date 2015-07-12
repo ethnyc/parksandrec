@@ -141,6 +141,7 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 	var a Activity
 	if err := decoder.Decode(&a); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 	a.Id = len(h.activs) + 1
@@ -155,7 +156,7 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 	}
 	a.Parts = []int{a.Owner}
 	if a.Owner > len(h.users) {
-		a.Cap = len(h.users)
+		a.Owner = 1
 	}
 	h.activs = append(h.activs, a)
 }
