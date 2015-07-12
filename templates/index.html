@@ -41,6 +41,10 @@
       var actMarkers = [];
       var plaMarkers = [];
       var activityInfoWindows = [];
+
+      function capPlusOne(cap) {
+        return cap+1;
+      }
       function initialize() {
         var MY_MAPTYPE_ID = 'custom_style';
         var featureOpts = [
@@ -97,10 +101,12 @@
             id: acoords[i].id,
             category: acoords[i].categ,
             desc: acoords[i].desc,
-            loc: acoords[i].loc
+            loc: acoords[i].loc,
+            cap: acoords[i].cap
           });
 
-          infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+marker.id+'"><p><p><b>'+marker.title+'</b><div>Description: '+marker.desc+'</div><div>Location: '+marker.loc+'</div>');
+          infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+marker.id+'"><p><p><b>'+marker.title+'</b><div>Description: '+marker.desc+'</div><div>Where: '+marker.loc+'</div><p><div id="capOutput">'+marker.cap+' going!</div><p><p><button id="target" type="button">  ➕ Join!</button>');
+
           activityInfoWindows.push(infowindow);
           infowindow.open(map, marker);
 
@@ -124,27 +130,7 @@
           // marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b><div> Description: '+this.desc+'</div><div> Location: '+this.loc+'</div>');
-
-
-
-// {
-// id: 11,
-// name: "More Tree Planting",
-// desc: "We love trees!",
-// categ: "",
-// point: "1.28646,103.781881",
-// loc: "Singapore Science Park II Singapore",
-// start: "1/1/2014 - 11:00",
-// end: "1/1/2014 - 11:02",
-// owner: 1,
-// participants: [
-// 555
-// ],
-// cap: 1
-// },
-
-
+            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b><div>Description: '+this.desc+'</div><div>Where: '+this.loc+'</div><p><div id="capOutput">'+this.cap+' going!</div><p><p><button id="target" type="button">  ➕ Join!</button>');
             infowindow.open(map, this);
           });
           // infowindow.open(map, this[i]);
@@ -183,11 +169,8 @@
           autocomplete = new google.maps.places.Autocomplete(search_bar),
           init = false
 
-        console.log("initalizing maps")
-
         google.maps.event.addListener(autocomplete, 'place_changed', function () {
           var place = autocomplete.getPlace()
-          console.log(place)
           if (!place.geometry) {
             return
           }
@@ -196,10 +179,8 @@
             for (var key in place.geometry.location)
               if (typeof place.geometry.location[key] == 'number' && returned_location.length < 2)
                 returned_location.push(place.geometry.location[key])
-              console.log("4")
             $('#new_idea_loc_lat').val(returned_location[0])  
             $('#new_idea_loc_long').val(returned_location[1])
-            console.log(returned_location)
         })
     
 
