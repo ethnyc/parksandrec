@@ -40,19 +40,24 @@ func (h *handler) index(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "README.md")
 }
 
+func filterPlaces(places []Place, search string) []Place {
+	if search == "" {
+		return places
+	}
+	found := []Place{}
+	for _, p := range places {
+		if !p.Matches(search) {
+			continue
+		}
+		found = append(found, p)
+	}
+	return found
+}
+
 func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
 	search := mux.Vars(r)["search"]
-	found := []Place{}
-	if search == "" {
-		found = h.places
-	} else {
-		for _, p := range h.places {
-			if p.Matches(search) {
-				found = append(found, p)
-			}
-		}
-	}
-	marshal(w, &found)
+	places := filterPlaces(h.places, search)
+	marshal(w, &places)
 }
 
 func marshal(w http.ResponseWriter, v interface{}) {
