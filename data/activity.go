@@ -10,6 +10,7 @@ type Activity struct {
 	Unique
 	Name  string `json:"name"`
 	Desc  string `json:"desc"`
+	Categ string `json:"categ"`
 	Point string `json:"point"`
 	Loc   string `json:"loc"`
 	Start string `json:"start"`
