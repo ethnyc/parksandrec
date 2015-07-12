@@ -48,7 +48,7 @@ func (k *clubsKML) Places() []Place {
 }
 
 func getClubs() []Place {
-	f, err := os.Open("clubs.kml")
+	f, err := os.Open("const/clubs.kml")
 	if err != nil {
 		log.Fatal(err)
 	}

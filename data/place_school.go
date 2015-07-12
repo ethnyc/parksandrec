@@ -7,7 +7,7 @@ import (
 )
 
 func getSchools() []Place {
-	f, err := os.Open("schools.json")
+	f, err := os.Open("const/schools.json")
 	if err != nil {
 		log.Fatal(err)
 	}
