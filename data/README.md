@@ -1,11 +1,13 @@
 ## Endpoints
 
+* GET /place/{placeid}
 * GET /places
 * GET /places/{search}
+* GET /activity/{activid}
 * GET /activities
 * GET /activities/{search}
-* GET /users
 * GET /user/{userid}
+* GET /users
 * GET /avatar/{userid}
 
 ### Searching

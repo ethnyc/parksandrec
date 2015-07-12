@@ -87,6 +87,20 @@ func (h *handler) searchactivs(w http.ResponseWriter, r *http.Request) {
 	doMarshal(w, r, &activs)
 }
 
+func (h *handler) getplace(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+	n, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if n < 1 || n > len(h.places) {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	doMarshal(w, r, &h.places[n-1])
+}
+
 func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 	n, err := strconv.Atoi(id)
@@ -99,6 +113,20 @@ func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	doMarshal(w, r, &h.users[n-1])
+}
+
+func (h *handler) getactivity(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+	n, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if n < 1 || n > len(h.activs) {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+	doMarshal(w, r, &h.activs[n-1])
 }
 
 func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
@@ -135,6 +163,7 @@ func main() {
 	h := newHttpHandler()
 	r := mux.NewRouter()
 	r.HandleFunc("/", h.index).Methods("GET")
+	r.HandleFunc("/place/{id}", h.getplace).Methods("GET")
 	r.HandleFunc("/places", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/", h.searchplaces).Methods("GET")
 	r.HandleFunc("/places/{search}", h.searchplaces).Methods("GET")
@@ -142,6 +171,7 @@ func main() {
 	r.HandleFunc("/users", h.getusers).Methods("GET")
 	r.HandleFunc("/users/", h.getusers).Methods("GET")
 	r.HandleFunc("/avatar/{id}", h.getavatar).Methods("GET")
+	r.HandleFunc("/activity/{id}", h.getactivity).Methods("GET")
 	r.HandleFunc("/activities", h.searchactivs).Methods("GET")
 	r.HandleFunc("/activities/", h.searchactivs).Methods("GET")
 	r.HandleFunc("/activities/{search}", h.searchactivs).Methods("GET")
