@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"strconv"
+	"sync"
 
 	"github.com/gorilla/mux"
 )
@@ -24,6 +25,7 @@ type handler struct {
 	places []Place
 	users  []User
 	activs []Activity
+	m      sync.RWMutex
 }
 
 func newHttpHandler() *handler {
@@ -82,6 +84,8 @@ func filterActivs(activs []Activity, search string) []Activity {
 }
 
 func (h *handler) searchactivs(w http.ResponseWriter, r *http.Request) {
+	h.m.RLock()
+	defer h.m.RUnlock()
 	search := mux.Vars(r)["search"]
 	activs := filterActivs(h.activs, search)
 	doMarshal(w, r, &activs)
@@ -115,7 +119,28 @@ func (h *handler) getuser(w http.ResponseWriter, r *http.Request) {
 	doMarshal(w, r, &h.users[n-1])
 }
 
+func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
+	h.m.Lock()
+	defer h.m.Unlock()
+	decoder := json.NewDecoder(r.Body)
+	var a Activity
+	if err := decoder.Decode(&a); err != nil {
+		log.Print(err)
+	}
+	a.Id = len(h.activs) + 1
+	a.Parts = []int{}
+	if a.Cap < 1 {
+		a.Cap = 1
+	}
+	if a.Cap > 50 {
+		a.Cap = 50
+	}
+	h.activs = append(h.activs, a)
+}
+
 func (h *handler) getactivity(w http.ResponseWriter, r *http.Request) {
+	h.m.RLock()
+	defer h.m.RUnlock()
 	id := mux.Vars(r)["id"]
 	n, err := strconv.Atoi(id)
 	if err != nil {
@@ -133,7 +158,7 @@ func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
 	doMarshal(w, r, &h.users)
 }
 
-func (h *handler) getidimg(kind, name string) func (http.ResponseWriter, *http.Request) {
+func (h *handler) getidimg(kind, name string) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["id"]
 		doFile(w, r, filepath.Join(kind, "img", name, id+".jpg"))
@@ -172,6 +197,7 @@ func main() {
 	r.HandleFunc("/user/{id}", h.getuser).Methods("GET")
 	r.HandleFunc("/users", h.getusers).Methods("GET")
 	r.HandleFunc("/users/", h.getusers).Methods("GET")
+	r.HandleFunc("/activity", h.postactivity).Methods("POST")
 	r.HandleFunc("/activity/{id}", h.getactivity).Methods("GET")
 	r.HandleFunc("/activities", h.searchactivs).Methods("GET")
 	r.HandleFunc("/activities/", h.searchactivs).Methods("GET")

@@ -7,6 +7,7 @@
 * GET /activity/{activid}
 * GET /activities
 * GET /activities/{search}
+* POST /activity
 
 * GET /user/{userid}
 * GET /users
