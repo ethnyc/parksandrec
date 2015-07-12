@@ -25,18 +25,39 @@
           center: { lat: 1.352083, lng: 103.819836},
           zoom: 12
         };
- 
-        // console.log(httpGet("10.10.200.66:8080/clubs"));
+
         var myLatlng = new google.maps.LatLng(1, 102);
         var map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
-     
-        var marker = new google.maps.Marker({
+ 
+        coords = getCoords();
+        for (i = 0; i < coords.length; i++) { 
+          var lat = parseFloat(coords[i].point.split(",")[0]);
+          var lng = parseFloat(coords[i].point.split(",")[1]);
+          var myLatlng = new google.maps.LatLng(lng, lat);
+
+          var marker = new google.maps.Marker({
             position: myLatlng,
-            map: map,
-            title: 'Hello World!'
-        });
+            title: coords[i].name
+          });
+          marker.setMap(map);
+        }
+    
       }
+
+      function getCoords() {
+        var mydata = [];
+        $.ajax({
+          url: 'http://10.10.200.66:8080/places',
+          async: false,
+          dataType: 'json',
+          success: function (json) {
+            mydata = json;
+          }
+        });
+        return mydata;
+      }
+
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 
