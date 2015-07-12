@@ -38,6 +38,8 @@
   </script-->
     <script type="text/javascript">
       var map;
+      var actMarkers = [];
+      var plaMarkers = [];
       function initialize() {
         var MY_MAPTYPE_ID = 'custom_style';
         var featureOpts = [
@@ -81,6 +83,7 @@
  
         acoords = getCoords("http://10.10.200.66:8080/activities");
         pcoords = getCoords("http://10.10.200.66:8080/places");
+
         for (i = 0; i < acoords.length; i++) {
           var lat = parseFloat(acoords[i].point.split(",")[0]);
           var lng = parseFloat(acoords[i].point.split(",")[1]);
@@ -106,7 +109,11 @@
           } else {
             marker.setIcon('http://maps.google.com/mapfiles/ms/micons/yellow-dot.png');
           }
-          marker.setMap(map);
+          actMarkers.push(marker);
+          for (var i = 0; i < actMarkers.length; i++) {
+            actMarkers[i].setMap(map);
+          }
+          // marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
             infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b>');
@@ -128,7 +135,11 @@
           });
 
           marker.setIcon('http://labs.google.com/ridefinder/images/mm_20_red.png');
-          marker.setMap(map);
+          plaMarkers.push(marker);
+          for (var i = 0; i < plaMarkers.length; i++) {
+            plaMarkers[i].setMap(map);
+          }
+          // marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
             infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b>');
@@ -206,6 +217,28 @@
           stopBounce(marker);
           infowindow.open( map, marker );
         });
+      }
+
+      function toggleActivityMarkers() {
+          if (actMarkers[0].getMap() != null) {
+            var arg = null;
+          } else {
+            var arg = map;
+          }
+          for (var i = 0; i < actMarkers.length; i++) {
+            actMarkers[i].setMap(arg);
+          }
+      }
+
+      function togglePlaceMarkers() {
+          if (plaMarkers[0].getMap() != null) {
+            var arg = null;
+          } else {
+            var arg = map;
+          }
+          for (var i = 0; i < plaMarkers.length; i++) {
+            plaMarkers[i].setMap(arg);
+          }
       }
 
       google.maps.event.addDomListener(window, 'load', initialize);
@@ -309,7 +342,12 @@
 
       <div class="row">
 
-        <div class="col-lg-2">hello</div>
+        <div class="col-lg-2">hello
+          <div id="panel">
+            <button onclick="toggleActivityMarkers()">Toggle Activity Markers</button>
+            <button onclick="togglePlaceMarkers()">Toggle Place Markers</button>
+          </div>
+        </div>
         <div class="col-md-8" >
           <form id="phrase_form">
             <div class="input-group" id="text_input_container">
