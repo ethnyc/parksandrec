@@ -82,5 +82,245 @@
 			2
 		],
 		"cap": 5
+	},
+	{
+		"id": 6,
+		"name": "Taichi on Sundays at Jurong",
+		"desc": "Time for taichi and fun for all ages!",
+		"categ": "community activity",
+		"point": "1.339843,103.73701400000004",
+		"loc": "Yu Hua Community Centre Boon Lay Way Jurong Singapore",
+		"start": "07/15/15-0900",
+		"end": "07/15/15-1000",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 10
+	},
+	{
+		"id": 7,
+		"name": "Basketball at Tampines",
+		"desc": "5 a side, lets play!",
+		"categ": "activities",
+		"point": "1.345852,103.94752900000003",
+		"loc": "Tampines Changkat Community Club Tampines Singapore",
+		"start": "07/15/15-0900",
+		"end": "07/15/15-1100",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 15
+	},
+	{
+		"id": 8,
+		"name": "Carpool",
+		"desc": "Going from Tuas to Changi on Monday!",
+		"categ": "sharing",
+		"point": "1.3244692,103.63285710000002",
+		"loc": "Tuas South Avenue 3 Singapore",
+		"start": "07/15/15-1100",
+		"end": "07/15/15-1130",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 3
+	},
+	{
+		"id": 9,
+		"name": "Cleaning Our Beaches",
+		"desc": "Let's keep our beaches clean and have a beach party!",
+		"categ": "community activity",
+		"point": "1.2526611,103.8188232",
+		"loc": "Beach View Singapore",
+		"start": "08/04/15 - 3:00",
+		"end": "08/04/15 - 4:00",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 12
+	},
+	{
+		"id": 10,
+		"name": "Sing with the old folks",
+		"desc": "Sing and bring joy to the elderly folks!",
+		"categ": "volunteering",
+		"point": "1.440721,103.77359200000001",
+		"loc": "Marsiling Community Club Singapore",
+		"start": "07/15/15-0900",
+		"end": "07/15/15-1000",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 5
+	},
+	{
+		"id": 11,
+		"name": "Cover the drain at kallang!",
+		"desc": "The drain at kallang needs to be covered",
+		"categ": "feedback",
+		"point": "1.31802,103.86241399999994",
+		"loc": "Kallang Community Club Singapore",
+		"start": "07/15/15-0900",
+		"end": "07/15/15-1000",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 1
+	},
+	{
+		"id": 12,
+		"name": "Weekly Chinese Chess tournaments!",
+		"desc": "Come and join us for weekly tournaments! For all ages!",
+		"categ": "community activity",
+		"point": "1.340488,103.77208399999995",
+		"loc": "Bukit Timah Community Club Singapore",
+		"start": "07/15/15-0900",
+		"end": "07/15/15-1000",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 20
+	},
+	{
+		"id": 13,
+		"name": "5 a side soccer",
+		"desc": "Anyone up for cage soccer!",
+		"categ": "activities",
+		"point": "1.34969,103.85075899999993",
+		"loc": "Bishan Community Club Bishan Street 13 Singapore",
+		"start": "08/15/15-0900",
+		"end": "08/15/15-1200",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 10
+	},
+	{
+		"id": 14,
+		"name": "Book Share!",
+		"desc": "Book swap with others and maybe discover your new favourite book!",
+		"categ": "community sharing",
+		"point": "1.297588,103.85430799999995",
+		"loc": "National Library, Singapore Singapore",
+		"start": "07/20/15 - 4:00",
+		"end": "07/20/15 - 5:00",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 5
+	},
+	{
+		"id": 15,
+		"name": "Beginner Baking Class",
+		"desc": "Join us for some beginner baking fun and learn how to make delectable pastries like red velvet cakes, brownies and chocolate chip cookies!",
+		"categ": "community activity",
+		"point": "1.366976,103.84087099999999",
+		"loc": "Ang Mo Kio Community Centre Ang Mo Kio Street 22 Singapore",
+		"start": "7/20/15 - 09:00",
+		"end": "7/20/15 - 12:00",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 12
+	},
+	{
+		"id": 16,
+		"name": "Weekly Water Polo Tournament",
+		"desc": "Come to the pool and fight it out in water polo!",
+		"categ": "community activity",
+		"point": "1.31079,103.86009999999999",
+		"loc": "Jalan Besar Swimming Complex Singapore",
+		"start": "08/15/15-0900",
+		"end": "08/15/15-1200",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 10
+	},
+	{
+		"id": 17,
+		"name": "Archery Meets at Tanjong Pagar",
+		"desc": "Test your marksmanship skills",
+		"categ": "community activity",
+		"point": "1.276229,103.84166000000005",
+		"loc": "Tanjong Pagar Community Club Cantonment Road Singapore",
+		"start": "08/10/15-1000",
+		"end": "08/10/15-1100",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 10
+	},
+	{
+		"id": 18,
+		"name": "Rock climbing",
+		"desc": "Rock climbing suitable for all ages and all skill levels. Join us today!",
+		"categ": "activities",
+		"point": "1.423853,103.84090000000003",
+		"loc": "SAFRA Yishun Yishun Singapore",
+		"start": "7/18/15 - 10:00",
+		"end": "7/18/15 - 18:00",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 6
+	},
+	{
+		"id": 19,
+		"name": "Tennis at CCAB training for kids",
+		"desc": "bring ur young ones! we are having free coaching lesson for kids!",
+		"categ": "community activity",
+		"point": "1.31886,103.81841400000008",
+		"loc": "Ccab Singapore",
+		"start": "08/10/15-0930",
+		"end": "08/10/15-1030",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 10
+	},
+	{
+		"id": 20,
+		"name": "Drain cover broken",
+		"desc": "Drain cover on west face of HDB block is broken, needs fixing ASAP please!",
+		"categ": "feedback",
+		"point": "1.393388,103.74353410000003",
+		"loc": "Block 545 Choa Chu Kang Street 52 Choa Chu Kang Singapore",
+		"start": "7/12/15 - 09:00",
+		"end": "7/12/15 - 09:00",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 1
+	},
+	{
+		"id": 21,
+		"name": "More dining amenities would be nice",
+		"desc": "There is not enough dedicated spaces to eat with friends and family",
+		"categ": "feedback",
+		"point": "1.33482,103.74692200000004",
+		"loc": "IMM Building Jurong East Street 21 Singapore",
+		"start": "07/23/15 - 2:00",
+		"end": "07/23/15 - 3:00",
+		"owner": 1,
+		"participants": [
+			555
+		],
+		"cap": 3
 	}
 ]
