@@ -12,5 +12,6 @@ type Activity struct {
 	Loc   string // desc of Point
 	Start time.Time
 	End   time.Time
+	Users []int
 	Cap   int
 }
