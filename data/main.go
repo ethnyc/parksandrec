@@ -23,9 +23,7 @@ type handler struct {
 }
 
 func newHttpHandler() *handler {
-	h := &handler{
-		tmpl: template.Must(template.ParseFiles("index.html")),
-	}
+	h := &handler{}
 	h.addPlaces(getClubs())
 	h.addPlaces(getSchools())
 	return h
@@ -39,9 +37,7 @@ func (h *handler) addPlaces(places []Place) {
 }
 
 func (h *handler) index(w http.ResponseWriter, r *http.Request) {
-	if err := h.tmpl.ExecuteTemplate(w, "index.html", nil); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	http.ServeFile(w, r, "README.md")
 }
 
 func (h *handler) searchplaces(w http.ResponseWriter, r *http.Request) {
