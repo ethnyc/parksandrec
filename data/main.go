@@ -208,6 +208,38 @@ func (h *handler) joinactivity(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) leaveactivity(w http.ResponseWriter, r *http.Request) {
+	h.m.Lock()
+	defer h.m.Unlock()
+	uid := mux.Vars(r)["uid"]
+	u, err := h.getuserbyid(uid)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	aid := mux.Vars(r)["aid"]
+	a, err := h.getactivitybyid(aid)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if u.Id == a.Owner {
+		http.Error(w, "owner cannot leave activity", http.StatusBadRequest)
+		return
+	}
+	found := false
+	newparts := []int{}
+	for _, id := range a.Parts {
+		if id == u.Id {
+			found = true
+			continue
+		}
+		newparts = append(newparts, id)
+	}
+	if !found {
+		http.Error(w, "user not part of activity", http.StatusBadRequest)
+		return
+	}
+	a.Parts = newparts
 }
 
 func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {

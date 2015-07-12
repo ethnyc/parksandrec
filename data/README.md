@@ -12,6 +12,9 @@
 * GET /user/{userid}
 * GET /users
 
+* GET /user/{userid}/join/{activityid}
+* GET /user/{userid}/leave/{activityid}
+
 * GET /img/place/{placeid}
 * GET /img/user/{userid}
 * GET /img/activity/{placeid}
