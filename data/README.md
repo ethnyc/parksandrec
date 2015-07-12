@@ -2,6 +2,8 @@
 
 * GET /places
 * GET /places/{search}
+* GET /activities
+* GET /activities/{search}
 * GET /users
 * GET /user/{userid}
 * GET /avatar/{userid}

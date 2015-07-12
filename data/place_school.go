@@ -11,6 +11,7 @@ func getSchools() []Place {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer f.Close()
 	var places []Place
 	json.NewDecoder(f).Decode(&places)
 	for i := range places {

@@ -52,6 +52,7 @@ func getClubs() []Place {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer f.Close()
 	k := clubsKML{}
 	xml.NewDecoder(f).Decode(&k)
 	return k.Places()

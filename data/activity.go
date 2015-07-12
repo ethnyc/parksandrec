@@ -24,9 +24,23 @@ func getActivities() []Activity {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer f.Close()
 	var activities []Activity
-	json.NewDecoder(f).Decode(&activities)
+	if err := json.NewDecoder(f).Decode(&activities); err != nil {
+		log.Fatal(err)
+	}
 	return activities
+}
+
+func putActivities(activities []Activity) {
+	f, err := os.Create("var/activities.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	if err := json.NewEncoder(f).Encode(&activities); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (a Activity) Matches(s string) bool {

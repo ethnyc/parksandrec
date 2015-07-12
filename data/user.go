@@ -17,6 +17,7 @@ func getUsers() []User {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer f.Close()
 	var users []User
 	json.NewDecoder(f).Decode(&users)
 	return users
