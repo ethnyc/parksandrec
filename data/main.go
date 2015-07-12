@@ -144,7 +144,6 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	a.Id = len(h.activs) + 1
-	a.Parts = []int{}
 	if a.Cap < 1 {
 		a.Cap = 1
 	}
@@ -154,6 +153,7 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 	if a.Owner < 1 {
 		a.Owner = 1
 	}
+	a.Parts = []int{a.Owner}
 	if a.Owner > len(h.users) {
 		a.Cap = len(h.users)
 	}
@@ -196,6 +196,10 @@ func (h *handler) joinactivity(w http.ResponseWriter, r *http.Request) {
 	a, err := h.getactivitybyid(aid)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if len(a.Parts) >= a.Cap {
+		http.Error(w, "activity already full", http.StatusBadRequest)
 		return
 	}
 	for _, id := range a.Parts {
