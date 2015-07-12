@@ -33,6 +33,7 @@ func newHttpHandler() *handler {
 		tmpl: template.Must(template.ParseFiles("index.html")),
 	}
 	h.places = append(h.places, getClubs()...)
+	h.places = append(h.places, getSchools()...)
 	h.get = endpoints{
 		"/":              h.index,
 		"/places":        h.getplaces,
