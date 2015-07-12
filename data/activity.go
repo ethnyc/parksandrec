@@ -15,6 +15,7 @@ type Activity struct {
 	Loc   string `json:"loc"`
 	Start string `json:"start"`
 	End   string `json:"end"`
+	Owner int    `json:"owner"`
 	Parts []int  `json:"participants"`
 	Cap   int    `json:"cap"`
 }

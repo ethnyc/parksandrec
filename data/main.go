@@ -135,6 +135,12 @@ func (h *handler) postactivity(w http.ResponseWriter, r *http.Request) {
 	if a.Cap > 50 {
 		a.Cap = 50
 	}
+	if a.Owner < 1 {
+		a.Owner = 1
+	}
+	if a.Owner > len(h.users) {
+		a.Cap = len(h.users)
+	}
 	h.activs = append(h.activs, a)
 }
 
