@@ -107,3 +107,9 @@
 #myModal{
     z-index:1000;
 }
+
+#activity-ticker{
+
+    overflow: scroll;
+    height :100vh;;
+}
