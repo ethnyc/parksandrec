@@ -133,9 +133,11 @@ func (h *handler) getusers(w http.ResponseWriter, r *http.Request) {
 	doMarshal(w, r, &h.users)
 }
 
-func (h *handler) getavatar(w http.ResponseWriter, r *http.Request) {
-	id := mux.Vars(r)["id"]
-	doFile(w, r, filepath.Join("const", "avatars", id+".jpg"))
+func (h *handler) getidimg(kind, name string) func (http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := mux.Vars(r)["id"]
+		doFile(w, r, filepath.Join(kind, "img", name, id+".jpg"))
+	}
 }
 
 func addHeaders(w http.ResponseWriter, r *http.Request) {
@@ -170,11 +172,13 @@ func main() {
 	r.HandleFunc("/user/{id}", h.getuser).Methods("GET")
 	r.HandleFunc("/users", h.getusers).Methods("GET")
 	r.HandleFunc("/users/", h.getusers).Methods("GET")
-	r.HandleFunc("/avatar/{id}", h.getavatar).Methods("GET")
 	r.HandleFunc("/activity/{id}", h.getactivity).Methods("GET")
 	r.HandleFunc("/activities", h.searchactivs).Methods("GET")
 	r.HandleFunc("/activities/", h.searchactivs).Methods("GET")
 	r.HandleFunc("/activities/{search}", h.searchactivs).Methods("GET")
+	r.HandleFunc("/img/place/{id}", h.getidimg("const", "place")).Methods("GET")
+	r.HandleFunc("/img/user/{id}", h.getidimg("const", "user")).Methods("GET")
+	r.HandleFunc("/img/activity/{id}", h.getidimg("var", "activity")).Methods("GET")
 	log.Printf("listen = %s", *listen)
 	http.Handle("/", r)
 	log.Println("Up and running!")

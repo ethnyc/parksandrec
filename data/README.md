@@ -3,12 +3,17 @@
 * GET /place/{placeid}
 * GET /places
 * GET /places/{search}
+
 * GET /activity/{activid}
 * GET /activities
 * GET /activities/{search}
+
 * GET /user/{userid}
 * GET /users
-* GET /avatar/{userid}
+
+* GET /img/place/{placeid}
+* GET /img/user/{userid}
+* GET /img/activity/{placeid}
 
 ### Searching
 
