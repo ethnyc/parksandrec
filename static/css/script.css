@@ -3,7 +3,9 @@
     background-color: #6FC5FE;
     font-style: "Lato:100";
     /*font-size:37px;*/
-    margin-bottom: 0px
+    margin-bottom: 0px;
+    height : 6%;
+    font-size: 12;
 }
 
 .header1 {
@@ -64,4 +66,5 @@
 
 .navbar-default .navbar-brand {
   color: #000000;
+  font-size: 20;
 }
