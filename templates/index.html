@@ -40,6 +40,7 @@
       var map;
       var actMarkers = [];
       var plaMarkers = [];
+      var activityInfoWindows = [];
       function initialize() {
         var MY_MAPTYPE_ID = 'custom_style';
         var featureOpts = [
@@ -78,7 +79,8 @@
         map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
 
         var infowindow = new google.maps.InfoWindow({
-          content: "COOL COMMUNITY CENTER"
+          content: "COOL COMMUNITY CENTER",
+          maxWidth: 225
         });
  
         acoords = getCoords("http://10.10.200.66:8080/activities");
@@ -93,8 +95,14 @@
             position: myLatlng,
             title: acoords[i].name,
             id: acoords[i].id,
-            category: acoords[i].categ
+            category: acoords[i].categ,
+            desc: acoords[i].desc,
+            loc: acoords[i].loc
           });
+
+          infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+marker.id+'"><p><p><b>'+marker.title+'</b><div>Description: '+marker.desc+'</div><div>Location: '+marker.loc+'</div>');
+          activityInfoWindows.push(infowindow);
+          infowindow.open(map, marker);
 
           if (marker.category == "volunteering") {
             marker.setIcon('http://maps.google.com/mapfiles/ms/micons/ltblue-dot.png');
@@ -116,9 +124,31 @@
           // marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
-            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b>');
+            infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+this.id+'"><p><p><b>'+this.title+'</b><div> Description: '+this.desc+'</div><div> Location: '+this.loc+'</div>');
+
+
+
+// {
+// id: 11,
+// name: "More Tree Planting",
+// desc: "We love trees!",
+// categ: "",
+// point: "1.28646,103.781881",
+// loc: "Singapore Science Park II Singapore",
+// start: "1/1/2014 - 11:00",
+// end: "1/1/2014 - 11:02",
+// owner: 1,
+// participants: [
+// 555
+// ],
+// cap: 1
+// },
+
+
             infowindow.open(map, this);
           });
+          // infowindow.open(map, this[i]);
+          // actMarkers.push(marker);
           updateActivityTicker();
         }
 
