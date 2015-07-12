@@ -221,13 +221,14 @@
         marker.setIcon('http://maps.google.com/mapfiles/ms/micons/pink-dot.png')
         // create info window
         var infowindow = new google.maps.InfoWindow({
-          content : activityName
+          // content : activityName
+          content : '<img src="http://10.10.200.66:8080/img/place/'+marker.id+'"><p><p><b>'+marker.title+'</b><div>Description: '+marker.desc+'</div><div>Where: '+marker.loc+'</div><p><p><span id="output">'+marker.cap+'</span> going!<p><p><button id="target" onclick="$(\'#output\').html(function(i, val) { return val*1+1 });" type="button">  ➕ Join!</button>'
           // CONTENT??
         });
         // show info window when marker is clicked
         google.maps.event.addListener(marker, 'click', function() {
           stopBounce(marker);
-          infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+marker.id+'"><p><p><b>'+marker.title+'</b><div>Description: '+marker.desc+'</div><div>Where: '+marker.loc+'</div><p><p><div id="output">'+marker.cap+'</span> going!<p><p><button id="target" onclick="$(\'#output\').html(function(i, val) { return val*1+1 });" type="button">  ➕ Join!</button>');
+          // infowindow.setContent('<img src="http://10.10.200.66:8080/img/place/'+marker.id+'"><p><p><b>'+marker.title+'</b><div>Description: '+marker.desc+'</div><div>Where: '+marker.loc+'</div><p><p><span id="output">'+marker.cap+'</span> going!<p><p><button id="target" onclick="$(\'#output\').html(function(i, val) { return val*1+1 });" type="button">  ➕ Join!</button>');
           infowindow.open( map, marker );
         });
       }
