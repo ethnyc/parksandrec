@@ -37,6 +37,7 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPKCyC2GBCVF2hyj27uFITu2v2fQTSaWE">
   </script-->
     <script type="text/javascript">
+      var map;
       function initialize() {
         var MY_MAPTYPE_ID = 'custom_style';
         var featureOpts = [
@@ -63,7 +64,7 @@
         };
 
         var myLatlng = new google.maps.LatLng(1, 102);
-        var map = new google.maps.Map(document.getElementById('map-canvas'),
+        map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
 
         var styledMapOptions = {
@@ -138,6 +139,54 @@
         });
         return coordsArray;
       }
+
+
+function stopBounce(mark) {
+  if (mark.getAnimation() != null) {
+    mark.setAnimation(null);
+  }
+}
+/*
+*  add_marker
+*  This function will add a marker to the selected Google Map
+*/
+// function add_marker( $marker, map ) {
+  function add_marker(lat, lng, activityName) {
+  // var
+  // var latlng = new google.maps.LatLng( $marker.attr('data-lat'), $marker.attr('data-lng') );
+  var latlng = new google.maps.LatLng( lat, lng );
+  // create marker
+  var marker = new google.maps.Marker({
+    position  : latlng,
+    map     : map,
+    animation : google.maps.Animation.BOUNCE
+  });
+  marker.setIcon('http://maps.google.com/mapfiles/ms/micons/green-dot.png')
+  // add to array
+  // map.markers.push( marker );
+
+
+// google.maps.event.addListener(marker, 'click', stopBounce);
+// }
+
+
+
+  // if marker contains HTML, add it to an infoWindow
+  // if( $marker.html() )
+  // {
+    // create info window
+    var infowindow = new google.maps.InfoWindow({
+      // content   : $marker.html()
+      content : activityName
+    });
+    // show info window when marker is clicked
+    google.maps.event.addListener(marker, 'click', function() {
+      stopBounce(marker);
+      infowindow.open( map, marker );
+    });
+  // }
+ }
+
 
       google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -332,7 +381,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-        <input type="button" value = "Let's Go!" id="add_activity" method="POST" form="new-idea" class="btn btn-primary" data-dismiss="modal">
+        <input type="button" value = "Let's Go!" id="add_activity" method="POST" form="new-idea" class="btn btn-primary" data-dismiss="modal" onclick="add_marker(document.getElementById('new_idea_loc_lat').value, document.getElementById('new_idea_loc_long').value, document.getElementById('activity_name').value);">
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
