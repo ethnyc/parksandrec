@@ -92,7 +92,6 @@
             category: coords[i].categ
           });
 
-          console.log(marker.category);
           if (marker.category == "volunteering") {
             marker.setIcon('http://maps.google.com/mapfiles/ms/micons/ltblue-dot.png');
           } else if (marker.category == "activities") {
@@ -106,7 +105,6 @@
           } else {
             marker.setIcon('http://maps.google.com/mapfiles/ms/micons/red-dot.png');
           }
-
           marker.setMap(map);
 
           google.maps.event.addListener(marker, 'click', function () {
@@ -159,52 +157,35 @@
       }
 
 
-function stopBounce(mark) {
-  if (mark.getAnimation() != null) {
-    mark.setAnimation(null);
-  }
-}
-/*
-*  add_marker
-*  This function will add a marker to the selected Google Map
-*/
-// function add_marker( $marker, map ) {
-  function add_marker(lat, lng, activityName) {
-  // var
-  // var latlng = new google.maps.LatLng( $marker.attr('data-lat'), $marker.attr('data-lng') );
-  var latlng = new google.maps.LatLng( lat, lng );
-  // create marker
-  var marker = new google.maps.Marker({
-    position  : latlng,
-    map     : map,
-    animation : google.maps.Animation.BOUNCE
-  });
-  marker.setIcon('http://maps.google.com/mapfiles/ms/micons/green-dot.png')
-  // add to array
-  // map.markers.push( marker );
+      function stopBounce(mark) {
+        if (mark.getAnimation() != null) {
+          mark.setAnimation(null);
+        }
+      }
 
-
-// google.maps.event.addListener(marker, 'click', stopBounce);
-// }
-
-
-
-  // if marker contains HTML, add it to an infoWindow
-  // if( $marker.html() )
-  // {
-    // create info window
-    var infowindow = new google.maps.InfoWindow({
-      // content   : $marker.html()
-      content : activityName
-    });
-    // show info window when marker is clicked
-    google.maps.event.addListener(marker, 'click', function() {
-      stopBounce(marker);
-      infowindow.open( map, marker );
-    });
-  // }
- }
-
+    /*
+    *  add_marker
+    *  This function will add a marker to the selected Google Map
+    */
+      function add_marker(lat, lng, activityName) {
+        var latlng = new google.maps.LatLng( lat, lng );
+        var marker = new google.maps.Marker({
+          position  : latlng,
+          map       : map,
+          animation : google.maps.Animation.BOUNCE
+        });
+        
+        marker.setIcon('http://maps.google.com/mapfiles/ms/micons/pink-dot.png')
+        // create info window
+        var infowindow = new google.maps.InfoWindow({
+          content : activityName
+        });
+        // show info window when marker is clicked
+        google.maps.event.addListener(marker, 'click', function() {
+          stopBounce(marker);
+          infowindow.open( map, marker );
+        });
+      }
 
       google.maps.event.addDomListener(window, 'load', initialize);
 
